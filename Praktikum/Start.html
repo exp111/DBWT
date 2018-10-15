@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+	<title>Start</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<style>
+		#header 
+		{
+			display: flex;
+		}
+		.navbar ul /* Don't indent '*/
+		{
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+		}
+		.navbar ul li /* All in one Line */ 
+		{
+			display: inline;
+			margin: auto;
+		}
+		.horizontal 
+		{
+			border-left: 2px solid;
+			padding-left: 0.3em;
+		}
+		.first 
+		{
+			border-left: none;
+		}
+		hr 
+		{
+			margin-top: 0;
+		}
+		#headerSearchbar {
+			margin: auto;
+		}
+	</style>
+</head>
+<body>
+<!-- Header with Navigation -->
+	<div class="container">
+		<header class="row" id="header">
+			<!-- Title -->
+			<div class="col" id="headerTitle">
+				<h1>e-Mensa</h1>
+			</div>
+			<!-- Nav -->
+			<nav class="col navbar" id="headerNavbar">
+				<ul>
+					<li class="horizontal first"><a href="Start.html">Start</a></li>
+					<li class="horizontal"><a href="Produkte.html">Mahlzeiten</a></li>
+					<li class="horizontal"><a href="#">Bestellung</a></li>
+					<li class="horizontal"><a href="#">FH-Aachen</a></li>
+				</ul>
+			</nav>
+			<!-- Search -->
+			<div class="col" id="headerSearchbar">
+				<input id="searchBar" type="text" placeholder="Search" style="float:right" class="form-control" />
+			</div>
+		</header>
+		<hr />
+		<!--  smth smth -->
+		<!-- Footer with some other Nav Stuff -->
+		<hr />
+		<footer class="row">
+			<!-- "Copyright" -->
+			<div class="col-2">
+				<p>(c) 2018 DBWT</p>
+			</div>
+			<!-- Nav -->
+			<nav class="col navbar" id="footerNavbar">
+				<ul>
+					<li class="horizontal first"><a href="#">Login</a></li>
+					<li class="horizontal"><a href="#">Registrieren</a></li>
+					<li class="horizontal"><a href="#">Zutatenliste</a></li>
+					<li class="horizontal"><a href="Start.html">Impressum</a></li>
+				</ul>
+			</nav>
+		</footer>
+	</div>
+</body>
+</html>
