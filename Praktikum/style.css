@@ -61,3 +61,8 @@ legend
     border: none;
     font-size: 14px;
 }
+
+#foodContainer div div.disabled 
+{
+    color: grey;
+}
