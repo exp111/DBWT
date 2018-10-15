@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-	<title>Start</title>
+	<meta charset="utf-8" />
+	<title>Produkte</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<!-- Header with Navigation -->
+	<!-- Header with Navigation -->
 	<div class="container">
 		<header class="row" id="header">
 			<!-- Title -->
@@ -30,49 +30,42 @@
 				<div class="input-group-prepend">
 					<div class="input-group-text"><i class="fas fa-search"></i></div>
 				</div>
-				<input id="searchBar" type="search" class="form-control" placeholder="Search" />
+				<input id="searchBar" type="search" class="form-control" placeholder="Search"/>
 			</div>
 		</header>
 		<hr />
 		<!--  smth smth -->
-		<!-- First Line (Image) -->
-		<div class="row">
-			<div class="col splash">
-				<img height="200" src="black.png" />
+		<!-- First Line (Title) -->
+		<div class="row" style="margin: auto; text-align: center">
+			<div class="col">
+				<h2>Verfügbare Speisen (Bestseller)</h2>
 			</div>
 		</div>
 		<br />
 		<!-- Second Line -->
 		<div class="row">
-			<!-- Left Text Field -->
+			<!-- Filter Form-->
 			<div class="col-2">
-				<p>Der Dienst e-Mensa ist noch beta. Sie können bereits <a href="Produkte.html">Mahlzeiten</a> durchstöbern, aber noch nicht bestellen.</p>
+				<form>
+					<fieldset>
+						<legend>Speisenliste filtern</legend>
+						<select class="form-control" id="filterCategory">
+							<option value="Kategorien">Kategorien</option>
+						</select><br/>
+						<input type="checkbox" id="filterAvailable" value="available"> nur verfügbar<br>
+						<input type="checkbox" id="filterVegetarian" value="vegetarian"> nur vegetarische<br>
+						<input type="checkbox" id="filterVegan" value="vegan"> nur vegane<br>
+						<br/>
+						<button class="btn btn-default btn-block">Speisen filtern</button>
+					</fieldset>
+				</form>
 			</div>
-			<!-- Big Text Field in the Middle -->
+			<!-- Food Elements -->
 			<div class="col">
-				<p>
-					<h2>Leckere Gerichte vorbestellen</h2><br/>
-					... und gemeinsam mit Kommilitonen und Freunden essen.
-				</p>
-			</div>
-			<!-- Right Buttons (Register, Login) -->
-			<div class="col-2" style="margin: auto">
-				<button type="button" class="btn btn-default btn-block"><i class="far fa-hand-point-right"></i> Registrieren</button>
-				<button type="button" class="btn btn-default btn-block"><i class="fas fa-sign-in-alt"></i> Anmelden</button>
+
 			</div>
 		</div>
 		<br />
-		<!-- Third Line-->
-		<div class="row">
-			<!-- Left Text Field -->
-			<div class="col-2">
-				<p>Registieren Sie sich <a href="#">hier</a>, um über die Veröffentlichung des Dienstes per Mail informiert zu werden.</p>
-			</div>
-			<!-- Middle to Right big Splash Image -->
-			<div class="col splash">
-				<img height="100" src="black.png"/>
-			</div>
-		</div>
 		<!-- Footer with some other Nav Stuff -->
 		<hr />
 		<footer class="row">

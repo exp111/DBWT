@@ -1,0 +1,62 @@
+﻿body /* Typical FH fonts */
+{
+    font-family: Clan, Verdana, Geneva, sans-serif;
+}
+
+#header /* All in one line Header */
+{
+    display: flex;
+}
+
+.navbar ul /* Don't indent '*/
+{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+    .navbar ul li /* Center links vertically */
+    {
+        margin: auto;
+    }
+
+.horizontal
+{
+    border-left: 2px solid;
+    padding-left: 0.3em;
+}
+
+.first
+{
+    border-left: none;
+}
+
+hr
+{
+    margin-top: 0;
+}
+
+.splash img /* stretch splash images */
+{
+    width: 100%;
+}
+
+a:visited, /* fh mint for links (visited and unvisited) */
+a:link
+{
+    color: rgb(0, 177, 172);
+}
+
+fieldset /* Reactivate the border cuz bootstrap disables it */
+{
+    border: solid 1px #DDD !important;
+    padding: 0 10px 10px 10px;
+    border-bottom: none;
+}
+
+legend
+{
+    width: auto !important;
+    border: none;
+    font-size: 14px;
+}
