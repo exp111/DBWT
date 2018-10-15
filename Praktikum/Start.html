@@ -37,6 +37,10 @@
 		#headerSearchbar {
 			margin: auto;
 		}
+		.splash img 
+		{
+			width: 100%;
+		}
 	</style>
 </head>
 <body>
@@ -58,16 +62,50 @@
 			</nav>
 			<!-- Search -->
 			<div class="col" id="headerSearchbar">
-				<input id="searchBar" type="text" placeholder="Search" style="float:right" class="form-control" />
+				<form>
+					<!--<label for="searchBar">Search</label>-->
+					<input id="searchBar" type="search" placeholder="Search" class="form-control" />
+				</form>
 			</div>
 		</header>
 		<hr />
 		<!--  smth smth -->
+		<!-- First Line (Image) -->
+		<div class="row">
+			<div class="col splash">
+				<img height="200" src="https://www.adler-farbenmeister.com/media/image/1e/f0/f2/schwarz_600x600@2x.jpg" />
+			</div>
+		</div>
+		<!-- Second Line -->
+		<div class="row">
+			<div class="col-2">
+				<p>Ipsum lorem stuff stuff reeeeeeeeeeeeeeeeeeeeeeeeeeeee</p>
+			</div>
+			<div class="col">
+				<p>
+					<h2>Leckere Gerichte vorbestellen</h2><br/>
+					... und gemeinsam mit Kommilitonen und Freunden essen.
+				</p>
+			</div>
+			<div class="col-2" style="margin: auto">
+				<button type="button" class="btn btn-default btn-block">Registrieren</button>
+				<button type="button" class="btn btn-default btn-block">Anmelden</button>
+			</div>
+		</div>
+		<!-- Third Line-->
+		<div class="row">
+			<div class="col-2">
+				<p>Ipsum lorem stuff stuff reeeeeeeeeeeeeeeeeeeeeeeeeeeee</p>
+			</div>
+			<div class="col">
+				<img style="width: 100%" height="100" src="https://www.adler-farbenmeister.com/media/image/1e/f0/f2/schwarz_600x600@2x.jpg" />
+			</div>
+		</div>
 		<!-- Footer with some other Nav Stuff -->
 		<hr />
 		<footer class="row">
 			<!-- "Copyright" -->
-			<div class="col-2">
+			<div class="col-4">
 				<p>(c) 2018 DBWT</p>
 			</div>
 			<!-- Nav -->
