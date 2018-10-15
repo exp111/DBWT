@@ -15,10 +15,11 @@
     list-style-type: none;
 }
 
-    .navbar ul li /* Center links vertically */
-    {
-        margin: auto;
-    }
+.navbar ul li /* Center links vertically */
+{
+    display: inline;
+    margin: auto;
+}
 
 .horizontal
 {
