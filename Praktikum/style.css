@@ -16,11 +16,11 @@
     white-space: nowrap;
 }
 
-.navbar ul li /* Center links vertically */
-{
-    display: inline;
-    margin: auto;
-}
+    .navbar ul li /* Center links vertically */
+    {
+        display: inline;
+        margin: auto;
+    }
 
 .horizontal /* Draw a line left of link as a seperator */
 {
@@ -53,6 +53,7 @@ nav a /* Set transition time for zoom & shadow */
 {
     transition: 0.5s;
 }
+
 nav a:hover /* Remove Underline and add shadow & zoom to show which is selected */
 {
     text-shadow: 0px 0px 1px #000000;
@@ -77,4 +78,50 @@ legend /* Same as above */
 #foodContainer div div.disabled /* Grey out all disabled items in the food list */
 {
     color: grey;
+}
+
+/* Stuff for the star rating */
+.bewertung
+{
+    border: 1px solid #cccccc;
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+
+.bewertung:not(:checked) > label
+{
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+}
+
+.bewertung:not(:checked) > input
+{
+    position: absolute;
+    top: -9999px;
+}
+
+.bewertung > input:checked ~ label
+{
+    color: #ffc700;
+}
+
+.bewertung:not(:checked) > label:before
+{
+    content: '★ ';
+}
+
+.bewertung:not(:checked) > label:hover, .bewertung:not(:checked) > label:hover ~ label
+{
+    color: #deb217;
+}
+
+.bewertung > input:checked + label:hover, .bewertung > input:checked + label:hover ~ label, .bewertung > input:checked ~ label:hover, .bewertung > input:checked ~ label:hover ~ label, .bewertung > label:hover ~ input:checked ~ label
+{
+    color: #c59b08;
 }

@@ -29,12 +29,13 @@
 				</ul>
 			</nav>
 			<!-- Search -->
-			<div class="col input-group" id="headerSearchbar" style="margin: auto">
+			<form action="http://www.google.de/search" class="col input-group" id="headerSearchbar" style="margin: auto">
 				<div class="input-group-prepend">
-					<div class="input-group-text"><i class="fas fa-search"></i></div>
+					<button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
 				</div>
-				<input id="searchBar" type="search" class="form-control" placeholder="Search" />
-			</div>
+				<input type="text" value="www.fh-aachen.de" hidden="hidden" name="as_sitesearch" />
+				<input id="searchBar" type="search" class="form-control" placeholder="Search" name="q" />
+			</form>
 		</header>
 		<hr />
 		<!--  smth smth -->
@@ -104,7 +105,26 @@
 						<p>Kichererbsen, Sesam, some content.</p>
 					</div>
 					<div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
-						<p>Some content.</p>
+						<form action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post">
+							<textarea name="bemerkung" class="form-control" rows="3" placeholder="Bemerkungen"></textarea>
+							<input type="text" class="form-control" placeholder="Benutzer" name="benutzer"/>
+							<div class="bewertung form-control">
+								<input type="radio" id="star5" name="bewertung" value="5" />
+								<label for="star5" title="text">5 stars</label>
+								<input type="radio" id="star4" name="bewertung" value="4" />
+								<label for="star4" title="text">4 stars</label>
+								<input type="radio" id="star3" name="bewertung" value="3" checked="checked" />
+								<label for="star3" title="text">3 stars</label>
+								<input type="radio" id="star2" name="bewertung" value="2" />
+								<label for="star2" title="text">2 stars</label>
+								<input type="radio" id="star1" name="bewertung" value="1" />
+								<label for="star1" title="text">1 star</label>
+							</div>
+							<button class="btn btn-default" type="submit">Abschicken</button>
+
+							<input type="text" class="form-control" value="3144196" name="matrikel" hidden="hidden" />
+							<input type="text" class="form-control" value="nie" name="kontrolle" hidden="hidden" />
+						</form>
 					</div>
 				</div>
 			</div>

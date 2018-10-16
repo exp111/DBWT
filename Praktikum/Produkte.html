@@ -29,12 +29,13 @@
 				</ul>
 			</nav>
 			<!-- Search -->
-			<div class="col input-group" id="headerSearchbar" style="margin: auto">
+			<form action="http://www.google.de/search" class="col input-group" id="headerSearchbar" style="margin: auto">
 				<div class="input-group-prepend">
-					<div class="input-group-text"><i class="fas fa-search"></i></div>
+					<button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
 				</div>
-				<input id="searchBar" type="search" class="form-control" placeholder="Search"/>
-			</div>
+				<input type="text" value="www.fh-aachen.de" hidden="hidden" name="as_sitesearch" />
+				<input id="searchBar" type="search" class="form-control" placeholder="Search" name="q" />
+			</form>
 		</header>
 		<hr />
 		<!--  smth smth -->
@@ -53,7 +54,9 @@
 					<fieldset>
 						<legend>Speisenliste filtern</legend>
 						<select class="form-control" id="filterCategory">
-							<option value="Kategorien">Kategorien</option>
+							<optgroup label="Kategorien">
+								<option value="Kategorien">Kategorien</option>
+							</optgroup>
 						</select><br/>
 						<input type="checkbox" id="filterAvailable" value="available"> nur verfügbar<br>
 						<input type="checkbox" id="filterVegetarian" value="vegetarian"> nur vegetarische<br>

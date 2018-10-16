@@ -28,12 +28,13 @@
 				</ul>
 			</nav>
 			<!-- Search -->
-			<div class="col input-group" id="headerSearchbar" style="margin: auto">
+			<form action="http://www.google.de/search" class="col input-group" id="headerSearchbar" style="margin: auto">
 				<div class="input-group-prepend">
-					<div class="input-group-text"><i class="fas fa-search"></i></div>
+					<button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
 				</div>
-				<input id="searchBar" type="search" class="form-control" placeholder="Search" />
-			</div>
+				<input type="text" value="www.fh-aachen.de" hidden="hidden" name="as_sitesearch"/>
+				<input id="searchBar" type="search" class="form-control" placeholder="Search" name="q"/>
+			</form>
 		</header>
 		<hr />
 		<!--  smth smth -->
