@@ -51,6 +51,12 @@ a:link
     color: rgb(0, 177, 172);
 }
 
+button /* Color buttons in fh colors */
+{
+    background-color: rgb(0, 177, 172);
+    color: white;
+}
+
 nav a /* Set transition time for zoom & shadow */
 {
     transition: 0.5s;
@@ -87,7 +93,7 @@ legend /* Same as above */
     margin-bottom: 5px;
 }
 
-#ratingForm div div, #ratingForm textarea /* You neither */
+#ratingForm div div, #ratingForm textarea, #ratingForm button /* You neither */
 {
     margin-bottom: 5px;
 }
