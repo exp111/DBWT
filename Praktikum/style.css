@@ -82,12 +82,12 @@ legend /* Same as above */
     color: grey;
 }
 
-#loginForm fieldset input
+#loginForm fieldset input /* Don't stick to each other */
 {
     margin-bottom: 5px;
 }
 
-#ratingForm div div, #ratingForm textarea
+#ratingForm div div, #ratingForm textarea /* You neither */
 {
     margin-bottom: 5px;
 }
