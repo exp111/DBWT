@@ -106,24 +106,26 @@
 					</div>
 					<div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
 						<form action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post">
-							<textarea name="bemerkung" class="form-control" rows="3" placeholder="Bemerkungen"></textarea>
-							<input type="text" class="form-control" placeholder="Benutzer" name="benutzer"/>
-							<div class="bewertung form-control">
-								<input type="radio" id="star5" name="bewertung" value="5" />
-								<label for="star5" title="text">5 stars</label>
-								<input type="radio" id="star4" name="bewertung" value="4" />
-								<label for="star4" title="text">4 stars</label>
-								<input type="radio" id="star3" name="bewertung" value="3" checked="checked" />
-								<label for="star3" title="text">3 stars</label>
-								<input type="radio" id="star2" name="bewertung" value="2" />
-								<label for="star2" title="text">2 stars</label>
-								<input type="radio" id="star1" name="bewertung" value="1" />
-								<label for="star1" title="text">1 star</label>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Benutzer" name="benutzer" style="height: 46px; margin-bottom: 5px"/>
+								<div class="bewertung form-control">
+									<input type="radio" id="star5" name="bewertung" value="5" />
+									<label for="star5" title="5 Sterne">5 Sterne</label>
+									<input type="radio" id="star4" name="bewertung" value="4" />
+									<label for="star4" title="4 Sterne">4 Sterne</label>
+									<input type="radio" id="star3" name="bewertung" value="3" checked="checked" />
+									<label for="star3" title="3 Sterne">3 Sterne</label>
+									<input type="radio" id="star2" name="bewertung" value="2" />
+									<label for="star2" title="2 Sterne">2 Sterne</label>
+									<input type="radio" id="star1" name="bewertung" value="1" />
+									<label for="star1" title="1 Stern">1 Stern</label>
+								</div>
 							</div>
-							<button class="btn btn-default" type="submit">Abschicken</button>
+							<textarea name="bemerkung" class="form-control" rows="3" placeholder="Bemerkungen" style="margin-bottom: 5px"></textarea>
+							<button class="btn btn-default" type="submit" style="float: right; margin-bottom: 5px">Abschicken</button>
 
-							<input type="text" class="form-control" value="3144196" name="matrikel" hidden="hidden" />
-							<input type="text" class="form-control" value="nie" name="kontrolle" hidden="hidden" />
+							<input type="text" class="form-control" value="3144196" name="matrikel" hidden="hidden"/>
+							<input type="text" class="form-control" value="nie" name="kontrolle" hidden="hidden"/>
 						</form>
 					</div>
 				</div>
@@ -135,7 +137,7 @@
 		<hr />
 		<footer class="row">
 			<!-- "Copyright" -->
-			<div class="col-4">
+			<div class="col-2">
 				<p><i class="far fa-copyright"></i> <b>2018 DBWT</b></p>
 			</div>
 			<!-- Nav -->

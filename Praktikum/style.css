@@ -3,9 +3,10 @@
     font-family: Clan, Verdana, Geneva, sans-serif;
 }
 
-#header /* All in one line Header */
+#header, #footer /* All in one line Header */
 {
     display: flex;
+    flex-wrap: nowrap;
 }
 
 .navbar ul /* Don't indent */
@@ -16,21 +17,22 @@
     white-space: nowrap;
 }
 
-    .navbar ul li /* Center links vertically */
-    {
-        display: inline;
-        margin: auto;
-    }
+.navbar ul li /* Center links vertically */
+{
+    display: inline;
+    margin: auto;
+}
 
 .horizontal /* Draw a line left of link as a seperator */
 {
-    border-left: 2px solid;
-    padding-left: 0.3em;
+    border-left: 0/*2px solid*/;
+    padding-left: 100px;
 }
 
 .first /* Don't draw if you're the first one */
 {
     border-left: none;
+    padding-left: 0;
 }
 
 hr /* Remove top margin so the text is directly on seperator */
@@ -104,6 +106,7 @@ legend /* Same as above */
 {
     position: absolute;
     top: -9999px;
+    right: 0;
 }
 
 .bewertung > input:checked ~ label
