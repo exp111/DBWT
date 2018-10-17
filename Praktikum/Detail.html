@@ -56,7 +56,7 @@
 		<div class="row">
 			<!-- Login Form-->
 			<div class="col-2">
-				<form>
+				<form id="loginForm">
 					<fieldset>
 						<legend>Login</legend>
 						<input id="loginName" type="text" class="form-control" placeholder="Benutzer" />
@@ -105,9 +105,9 @@
 						<p>Kichererbsen, Sesam, some content.</p>
 					</div>
 					<div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
-						<form action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post">
+						<form id="ratingForm" action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Benutzer" name="benutzer" style="height: 46px; margin-bottom: 5px"/>
+								<input type="text" class="form-control" placeholder="Benutzer" name="benutzer" style="height: 46px"/>
 								<div class="bewertung form-control">
 									<input type="radio" id="star5" name="bewertung" value="5" />
 									<label for="star5" title="5 Sterne">5 Sterne</label>
@@ -121,8 +121,8 @@
 									<label for="star1" title="1 Stern">1 Stern</label>
 								</div>
 							</div>
-							<textarea name="bemerkung" class="form-control" rows="3" placeholder="Bemerkungen" style="margin-bottom: 5px"></textarea>
-							<button class="btn btn-default" type="submit" style="float: right; margin-bottom: 5px">Abschicken</button>
+							<textarea name="bemerkung" class="form-control" rows="3" placeholder="Bemerkungen"></textarea>
+							<button class="btn btn-default" type="submit" style="float: right">Abschicken</button>
 
 							<input type="text" class="form-control" value="3144196" name="matrikel" hidden="hidden"/>
 							<input type="text" class="form-control" value="nie" name="kontrolle" hidden="hidden"/>

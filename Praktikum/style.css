@@ -82,6 +82,16 @@ legend /* Same as above */
     color: grey;
 }
 
+#loginForm fieldset input
+{
+    margin-bottom: 5px;
+}
+
+#ratingForm div div, #ratingForm textarea
+{
+    margin-bottom: 5px;
+}
+
 /* Stuff for the star rating */
 .bewertung
 {
