@@ -35,9 +35,13 @@
     padding-left: 0;
 }
 
-hr /* Remove top margin so the text is directly on seperator */
+.hr /* Remove top margin so the text is directly on seperator */
 {
+    border-top: 1px solid grey;
+    width: 95%;
+    margin: auto;
     margin-top: 0;
+    margin-bottom: 10px;
 }
 
 .splash img /* stretch splash images */
@@ -83,6 +87,12 @@ legend /* Same as above */
     font-size: 14px;
 }
 
+#foodContainer div div
+{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
 #foodContainer div div.disabled /* Grey out all disabled items in the food list */
 {
     color: grey;
