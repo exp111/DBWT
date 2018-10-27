@@ -95,7 +95,9 @@ legend /* Same as above */
 }
 #foodContainer div div.disabled /* Grey out all disabled items in the food list */
 {
-    color: grey;
+    color: gray;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
 }
 
 #loginForm fieldset input /* Don't stick to each other */
