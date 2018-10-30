@@ -1,4 +1,5 @@
-﻿@functions{
+﻿@using System.ServiceModel.Channels
+@functions{
 
 	public class Food
 	{
@@ -15,11 +16,27 @@
 @{
 	Food[] allFood =
 	{
-	new Food("Curry Wok"), new Food("Schnitzel"), new Food("Bratrolle", false), new Food("Krautsalat"),
-	new Food("Falafel"), new Food("Currywurst"), new Food("Käsestulle"), new Food("Spiegelei"),
-	new Food("Eintopf")
+		new Food("Curry Wok"), new Food("Schnitzel"), new Food("Bratrolle", false), new Food("Krautsalat"),
+		new Food("Falafel"), new Food("Currywurst"), new Food("Käsestulle"), new Food("Spiegelei"),
+		new Food("Eintopf")
 	};
-	Food[] food = allFood;
+	Food[] food;
+	if (IsPost)
+	{
+		if (Request["filterAvailable"] != null && Request["filterAvailable"] == "available")
+		{
+			food = allFood.Where(f => f.Available).ToArray();
+
+		}
+		else
+		{
+			food = allFood;
+		}
+	}
+	else
+	{
+		food = allFood;
+	}
 	uint columns = 4;
 	uint rows = 2;
 }
@@ -83,7 +100,7 @@
 								<option value="Kategorien">Kategorien</option>
 							</optgroup>
 						</select><br />
-						<input type="checkbox" id="filterAvailable" value="available"> nur verfügbar<br>
+						<input type="checkbox" name="filterAvailable" id="filterAvailable" value="available"> nur verfügbar<br>
 						<input type="checkbox" id="filterVegetarian" value="vegetarian"> nur vegetarische<br>
 						<input type="checkbox" id="filterVegan" value="vegan"> nur vegane<br>
 						<br /><br />
@@ -110,7 +127,7 @@
 									}
 									else
 									{
-										<p>vergriffen</p>
+										<span>vergriffen</span>
 									}
 								</div>
 							}

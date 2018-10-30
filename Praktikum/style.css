@@ -92,6 +92,7 @@ legend /* Same as above */
     text-align: center;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 15px;
 }
 #foodContainer div div.disabled /* Grey out all disabled items in the food list */
 {
