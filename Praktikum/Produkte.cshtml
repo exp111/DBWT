@@ -1,37 +1,50 @@
-﻿@using System.ServiceModel.Channels
+﻿@using System.Diagnostics
+@using System.ServiceModel.Channels
 @functions{
 
 	public class Food
 	{
-		public Food(string name, bool available = true)
+		public Food(string name, string category = "normal", bool available = true, bool vegetarian = false, bool vegan = false)
 		{
 			Name = name;
+			Category = category;
 			Available = available;
+			Vegetarian = vegetarian;
+			Vegan = vegan;
 		}
 
 		public string Name { get; set; }
+		public string Category { get; set; }
 		public bool Available { get; set; }
+		public bool Vegetarian { get; set; }
+		public bool Vegan { get; set; }
 	};
 }
 @{
 	Food[] allFood =
 	{
-		new Food("Curry Wok"), new Food("Schnitzel"), new Food("Bratrolle", false), new Food("Krautsalat"),
+		new Food("Curry Wok"), new Food("Schnitzel"), new Food("Bratrolle", available: false), new Food("Krautsalat", vegetarian: true),
 		new Food("Falafel"), new Food("Currywurst"), new Food("Käsestulle"), new Food("Spiegelei"),
-		new Food("Eintopf")
+		new Food("Eintopf"), new Food("dunno what's vegan", category: "weird", vegetarian: true, vegan: true)
 	};
 	Food[] food;
 	if (IsPost)
 	{
-		if (Request["filterAvailable"] != null && Request["filterAvailable"] == "available")
-		{
-			food = allFood.Where(f => f.Available).ToArray();
+		bool checkCategory = !Request["filterCategory"].IsEmpty();
+		string category = Request["filterCategory"];
 
-		}
-		else
-		{
-			food = allFood;
-		}
+		bool checkAvailable = Request["filterAvailable"] != null;
+		bool available = checkAvailable && Request["filterAvailable"] == "available";
+
+		bool checkVegetarian = Request["filterVegetarian"] != null;
+		bool vegetarian = checkVegetarian && Request["filterVegetarian"] == "vegetarian";
+
+		bool checkVegan = Request["filterVegan"] != null;
+		bool vegan = checkVegan && Request["filterVegan"] == "vegan";
+		food = allFood.Where(f => (!checkCategory || f.Category == category) &&
+		                          (!checkAvailable || f.Available == available) && 
+		                          (!checkVegetarian || f.Vegetarian == vegetarian) && 
+		                          (!checkVegan || f.Vegan == vegan)).ToArray();
 	}
 	else
 	{
@@ -95,14 +108,16 @@
 				<form method="post">
 					<fieldset>
 						<legend>Speisenliste filtern</legend>
-						<select class="form-control" id="filterCategory">
+						<select class="form-control" name="filterCategory" id="filterCategory">
 							<optgroup label="Kategorien">
-								<option value="Kategorien">Kategorien</option>
+								<option value="" selected="@(Request["filterCategory"] == "")">Alle</option>
+								<option value="normal" selected="@(Request["filterCategory"] == "normal")">Normal</option>
+								<option value="weird" selected="@(Request["filterCategory"] == "weird")">Pretty weird stuff</option>
 							</optgroup>
 						</select><br />
-						<input type="checkbox" name="filterAvailable" id="filterAvailable" value="available"> nur verfügbar<br>
-						<input type="checkbox" id="filterVegetarian" value="vegetarian"> nur vegetarische<br>
-						<input type="checkbox" id="filterVegan" value="vegan"> nur vegane<br>
+						<input type="checkbox" name="filterAvailable" id="filterAvailable" value="available" checked="@Request["filterAvailable"]"> nur verfügbar<br>
+						<input type="checkbox" name="filterVegetarian" id="filterVegetarian" value="vegetarian" checked="@Request["filterVegetarian"]"> nur vegetarische<br>
+						<input type="checkbox" name="filterVegan" id="filterVegan" value="vegan" checked="@Request["filterVegan"]"> nur vegane<br>
 						<br /><br />
 						<button class="btn btn-default btn-block">Speisen filtern</button>
 					</fieldset>
