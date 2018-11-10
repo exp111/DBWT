@@ -1,30 +1,29 @@
-﻿<!DOCTYPE html>
-@using MySql.Data.MySqlClient;
-@{
+﻿@{
 	Layout = "~/_Layout.cshtml";
 	Page.title = "Zutaten";
 }
+<!DOCTYPE html>
 <html>
 <body>
-<div class="table-responsive">
-	<table class="table table-hover">
-		<thead>
-		<tr>
-			<th>Zutat</th>
-			<th>Vegan?</th>
-			<th>Vegetarisch?</th>
-			<th>Glutenfrei?</th>
-		</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><a href="http://www.google.de/search?q=Amaranth">Amaranth</a></td>
-				<td><i class="far fa-check-circle"></i></td>
-				<td><i class="far fa-check-circle"></i></td>
-				<td><i class="far fa-circle"></i></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Zutat</th>
+					<th>Vegan?</th>
+					<th>Vegetarisch?</th>
+					<th>Glutenfrei?</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><a href="http://www.google.de/search?q=Amaranth">Amaranth</a><img src="bio.svg" height="25" /></td>
+					<td><i class="far fa-check-circle"></i></td>
+					<td><i class="far fa-check-circle"></i></td>
+					<td><i class="far fa-circle"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>
