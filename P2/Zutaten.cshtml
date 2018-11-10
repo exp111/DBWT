@@ -1,6 +1,32 @@
-﻿@{
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient;
+@{
 	Layout = "~/_Layout.cshtml";
 	Page.title = "Zutaten";
+}
+@functions
+{
+	class ZutatenModel
+	{
+		public int ID { get; set; }
+		public string Name { get; set; }
+		public bool Bio { get; set; }
+		public bool Vegetarisch { get; set; }
+		public bool Vegan { get; set; }
+		public bool Glutenfrei { get; set; }
+	}
+}
+
+@helper BioIcon(bool bio)
+{
+	if (bio)
+	{
+		<img src="bio.svg" height="25"/>
+	}
+}
+@helper FlagIcon(bool flag)
+{
+	<i class="far @(flag ? "fa-check-circle" : "fa-circle")"></i>
 }
 <!DOCTYPE html>
 <html>
@@ -16,12 +42,40 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td><a href="http://www.google.de/search?q=Amaranth">Amaranth</a><img src="bio.svg" height="25" /></td>
-					<td><i class="far fa-check-circle"></i></td>
-					<td><i class="far fa-check-circle"></i></td>
-					<td><i class="far fa-circle"></i></td>
-				</tr>
+				@{
+					string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+					using (MySqlConnection con = new MySqlConnection(constr))
+					{
+						string query = "SELECT * FROM Zutaten";
+						using (MySqlCommand cmd = new MySqlCommand(query))
+						{
+							cmd.Connection = con;
+							con.Open();
+							using (MySqlDataReader reader = cmd.ExecuteReader())
+							{
+								while (reader.Read())
+								{
+									var zutat = new ZutatenModel
+									{
+										ID = Convert.ToInt32(reader["ID"]),
+										Name = reader["Name"].ToString(),
+										Bio = Convert.ToBoolean(reader["Bio"]),
+										Vegetarisch = Convert.ToBoolean(reader["Vegetarisch"]),
+										Vegan = Convert.ToBoolean(reader["Vegan"]),
+										Glutenfrei = Convert.ToBoolean(reader["Glutenfrei"])
+									};
+									<tr>
+										<td><a href="@($"http://www.google.de/search?q={zutat.Name}")">@zutat.Name</a>@BioIcon(zutat.Bio)</td>
+										<td>@FlagIcon(zutat.Vegetarisch)</td>
+										<td>@FlagIcon(zutat.Vegan)</td>
+										<td>@FlagIcon(zutat.Glutenfrei)</td>
+									</tr>
+								}
+							}
+							con.Close();
+						}
+					}
+				}
 			</tbody>
 		</table>
 	</div>
