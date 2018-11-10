@@ -1,8 +1,106 @@
-﻿<!DOCTYPE html>
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient
+@functions
+{
+	class Mahlzeit
+	{
+		public int ID { get; set; }
+		public string Name { get; set; }
+		public string Beschreibung { get; set; }
+		public int Vorrat { get; set; }
+		public bool verfügbar { get; set; }
+	};
+
+	class Preis
+	{
+		public int ID { get; set; }
+		public double Gastpreis { get; set; }
+		public double MAPreis { get; set; }
+		public double Studentpreis { get; set; }
+	}
+}
 @{
 	Layout = "~/_Layout.cshtml";
 	Page.title = "Detail";
+
+	String id = Request.QueryString["id"];
+
+	string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+	Mahlzeit mahlzeit = new Mahlzeit(){ID = 0, Beschreibung = "no u", Name = "Falafel"};
+	Preis preis = new Preis() {ID = 0, Gastpreis = 5.95, MAPreis = 5.95, Studentpreis = 5.95};
+	List<String> zutaten = new List<string>();
+	using (MySqlConnection con = new MySqlConnection(constr))
+	{
+		con.Open();
+		// Get Mahlzeit Details
+		string query = $"SELECT * FROM Mahlzeiten WHERE ID = {id}";
+		using (MySqlCommand cmd = new MySqlCommand(query))
+		{
+			cmd.Connection = con;
+			using (MySqlDataReader reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					mahlzeit = new Mahlzeit
+					{
+						ID = Convert.ToInt32(reader["ID"]),
+						//Name = reader["Name"].ToString(),
+						Beschreibung = reader["Beschreibung"].ToString()
+					};
+				}
+			}
+		}
+		// Get Price
+		query = $"SELECT * FROM Preise WHERE ID = {id}";
+		using (MySqlCommand cmd = new MySqlCommand(query))
+		{
+			cmd.Connection = con;
+			using (MySqlDataReader reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					preis = new Preis
+					{
+						ID = Convert.ToInt32(reader["ID"]),
+						Gastpreis = Convert.ToDouble(reader["Gastpreis"]),
+						MAPreis = Convert.ToDouble(reader["MA-Preis"]),
+						Studentpreis = Convert.ToDouble(reader["Studentpreis"])
+					};
+				}
+			}
+		}
+		// Get Zutaten
+		List<int> ids = new List<int>();
+		query = $"SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}";
+		using (MySqlCommand cmd = new MySqlCommand(query))
+		{
+			cmd.Connection = con;
+			using (MySqlDataReader reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					ids.Add(Convert.ToInt32(reader["Zutat"]));
+				}
+			}
+		}
+		// Get Zutaten Details
+		query = $"SELECT * FROM Zutaten WHERE ID in ({string.Join(",", ids)})";
+		using (MySqlCommand cmd = new MySqlCommand(query))
+		{
+			cmd.Connection = con;
+			using (MySqlDataReader reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					zutaten.Add(reader["Name"].ToString());
+				}
+			}
+		}
+		con.Close();
+	}
+
 }
+<!DOCTYPE html>
 <html>
 <body>
 	<!-- First Line (Title, Guest Price) -->
@@ -37,7 +135,7 @@
 		</div>
 		<!-- Price & Buy Button-->
 		<div class="col-2">
-			<span style="position: absolute; right: 0; font-size: x-large">5,95 €</span>
+			<span style="position: absolute; right: 0; font-size: x-large">@preis.Gastpreis €</span>
 			<button type="button" class="btn btn-default btn-block" style="position: absolute; right: 0; bottom: 0"><i class="fas fa-utensils"></i> Vorbestellen</button>
 		</div>
 	</div>
@@ -65,10 +163,10 @@
 			</ul>
 			<div class="tab-content" id="tabsContent" style="padding: 5px">
 				<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="desc-tab">
-					<p>Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der <a href="#">Krautsalat</a>.</p>
+					<p>@mahlzeit.Beschreibung</p>
 				</div>
 				<div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
-					<p>Kichererbsen, Sesam, some content.</p>
+					<p>@string.Join(", ", zutaten)</p>
 				</div>
 				<div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
 					<form id="ratingForm" action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post">

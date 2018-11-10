@@ -146,8 +146,8 @@ CREATE TABLE Preise(
   ID INT NOT NULL,
   Jahr INT NOT NULL,
   Gastpreis DECIMAL(4,2) NOT NULL,
-  `MAPreis` DECIMAL(4,2),
-  Studentpreis DECIMAL(4,2) CHECK (`MAPreis` > Studentpreis),
+  `MA-Preis` DECIMAL(4,2),
+  Studentpreis DECIMAL(4,2) CHECK (`MA-Preis` > Studentpreis),
   PRIMARY KEY (ID),
   FOREIGN KEY (ID) REFERENCES Mahlzeiten(ID) ON DELETE CASCADE
 );
@@ -247,4 +247,13 @@ INSERT INTO Studenten(Nummer, Matrikelnummer, Studiengang) VALUES(4, 123456789, 
 #DELETE FROM Benutzer WHERE Nummer = 2;
 #DELETE FROM Studenten WHERE Studiengang = "ET";
 
-SELECT * FROM Studenten WHERE Matrikelnummer BETWEEN 10000000 AND 999999999;
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00000, "Amaranth", true, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00001, "Champignons", true, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00002, "Fenchel", true, true, true, true);
+
+INSERT INTO Mahlzeiten(ID, Beschreibung, Vorrat) VALUES (1, "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat.", 2);
+INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (1, 2018, 5.95, 4.95, 3.95);
+
+INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 0);
+INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 2);
+
