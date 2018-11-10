@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = "~/_Layout.cshtml";
+	Page.title = "Produkte";
+}
+<html>
+<body>
+	<!-- First Line (Title) -->
+	<div class="row" style="margin: auto; text-align: center">
+		<div class="col">
+			<h2>Verfügbare Speisen (Bestseller)</h2>
+		</div>
+	</div>
+	<br />
+	<!-- Second Line -->
+	<div class="row">
+		<!-- Filter Form-->
+		<div class="col-2">
+			<form>
+				<fieldset>
+					<legend>Speisenliste filtern</legend>
+					<select class="form-control" id="filterCategory">
+						<optgroup label="Kategorien">
+							<option value="Kategorien">Kategorien</option>
+						</optgroup>
+					</select><br />
+					<input type="checkbox" id="filterAvailable" value="available"> nur verfügbar<br>
+					<input type="checkbox" id="filterVegetarian" value="vegetarian"> nur vegetarische<br>
+					<input type="checkbox" id="filterVegan" value="vegan"> nur vegane<br>
+					<br /><br />
+					<button class="btn btn-default btn-block">Speisen filtern</button>
+				</fieldset>
+			</form>
+		</div>
+		<!-- Food Elements -->
+		<div class="col">
+			<!-- Food Container -->
+			<div class="container" id="foodContainer">
+				<!-- First Line -->
+				<div class="row">
+					<div class="col">
+						<img src="black.png" width="100" height="100" alt="Curry Wok" /><br />
+						Curry Wok<br />
+						<a href="Detail.cshtml">Details</a>
+					</div>
+					<div class="col">
+						<img src="black.png" width="100" height="100" alt="Schnitzel" /><br />
+						Schnitzel<br />
+						<a href="Detail.cshtml">Details</a>
+					</div>
+					<div class="col disabled">
+						<img src="black.png" width="100" height="100" alt="Bratrolle" /><br />
+						Bratrolle<br />
+						vergriffen
+					</div>
+					<div class="col">
+						<img src="black.png" width="100" height="100" alt="Krautsalat" /><br />
+						Krautsalat<br />
+						<a href="Detail.cshtml">Details</a>
+					</div>
+				</div>
+				<br />
+				<!-- Second Line -->
+				<div class="row">
+					<div class="col">
+						<img src="black.png" width="100" height="100" alt="Falafel" /><br />
+						Falafel<br />
+						<a href="Detail.cshtml">Details</a>
+					</div>
+					<div class="col">
+						<img src="black.png" width="100" height="100" alt="Currywurst" /><br />
+						Currywurst<br />
+						<a href="Detail.cshtml">Details</a>
+					</div>
+					<div class="col">
+						<img src="black.png" width="100" height="100" alt="Käsestulle" /><br />
+						Käsestulle<br />
+						<a href="Detail.cshtml">Details</a>
+					</div>
+					<div class="col">
+						<img src="black.png" width="100" height="100" alt="Spiegelei" /><br />
+						Spiegelei<br />
+						<a href="Detail.cshtml">Details</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

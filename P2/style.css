@@ -1,0 +1,160 @@
+﻿body /* Typical FH fonts */
+{
+    font-family: Clan, Verdana, Geneva, sans-serif;
+}
+
+#header, #footer /* All in one line Header */
+{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.navbar ul /* Don't indent */
+{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    white-space: nowrap;
+}
+
+    .navbar ul li /* Center links vertically */
+    {
+        display: inline;
+        margin: auto;
+    }
+
+.horizontal /* Draw a line left of link as a seperator */
+{
+    border-left: 0 /*2px solid*/;
+    padding-left: 100px;
+}
+
+.first /* Don't draw if you're the first one */
+{
+    border-left: none;
+    padding-left: 0;
+}
+
+.hr /* Remove top margin so the text is directly on seperator */
+{
+    border-top: 1px solid grey;
+    width: 95%;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.splash img /* stretch splash images */
+{
+    width: 100%;
+}
+
+a:visited, /* fh mint for links (visited and unvisited) */
+a:link
+{
+    color: rgb(0, 177, 172);
+}
+
+button /* Color buttons in fh colors */
+{
+    background-color: rgb(0, 177, 172);
+    color: white;
+}
+
+nav a /* Set transition time for zoom & shadow */
+{
+    transition: 0.5s;
+}
+
+    nav a:hover /* Remove Underline and add shadow & zoom to show which is selected */
+    {
+        text-shadow: 0px 0px 1px #000000;
+        text-decoration: none;
+        font-size: large;
+    }
+
+fieldset /* Reactivate the border cuz bootstrap disables it */
+{
+    border: solid 1px #DDD !important;
+    padding: 0 10px 10px 10px;
+    border-bottom: none;
+}
+
+legend /* Same as above */
+{
+    width: auto !important;
+    border: none;
+    font-size: 14px;
+}
+
+#foodContainer div div
+{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+}
+
+    #foodContainer div div.disabled /* Grey out all disabled items in the food list */
+    {
+        color: gray;
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+    }
+
+#loginForm fieldset input /* Don't stick to each other */
+{
+    margin-bottom: 5px;
+}
+
+#ratingForm div div, #ratingForm textarea, #ratingForm button /* You neither */
+{
+    margin-bottom: 5px;
+}
+
+/* Stuff for the star rating */
+.bewertung
+{
+    border: 1px solid #cccccc;
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+
+    .bewertung:not(:checked) > label
+    {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
+
+    .bewertung:not(:checked) > input
+    {
+        position: absolute;
+        top: -9999px;
+        right: 0;
+    }
+
+    .bewertung > input:checked ~ label
+    {
+        color: #ffc700;
+    }
+
+    .bewertung:not(:checked) > label:before
+    {
+        content: '★ ';
+    }
+
+    .bewertung:not(:checked) > label:hover, .bewertung:not(:checked) > label:hover ~ label
+    {
+        color: #deb217;
+    }
+
+    .bewertung > input:checked + label:hover, .bewertung > input:checked + label:hover ~ label, .bewertung > input:checked ~ label:hover, .bewertung > input:checked ~ label:hover ~ label, .bewertung > label:hover ~ input:checked ~ label
+    {
+        color: #c59b08;
+    }

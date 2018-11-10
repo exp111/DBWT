@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = "~/_Layout.cshtml";
+	Page.title = "Detail";
+}
+<html>
+<body>
+	<!-- First Line (Title, Guest Price) -->
+	<div class="row">
+		<!-- Nothing -->
+		<div class="col-2"></div>
+		<!-- Title -->
+		<div class="col" style="left: 0; top: 0">
+			<h2>Details für "Falafel"</h2>
+		</div>
+		<!-- Guest Price -->
+		<div class="col-2">
+			<span style="position: absolute; right: 0; bottom: 0">Gast-Preis</span>
+		</div>
+	</div>
+	<!-- Second Line (Login, Picture, Price & Buy)-->
+	<div class="row">
+		<!-- Login Form-->
+		<div class="col-2">
+			<form id="loginForm">
+				<fieldset>
+					<legend>Login</legend>
+					<input id="loginName" type="text" class="form-control" placeholder="Benutzer" />
+					<input id="loginPassword" type="password" class="form-control" placeholder="Passwort" />
+					<a href="#">Anmelden</a>
+				</fieldset>
+			</form>
+		</div>
+		<!-- Picture -->
+		<div class="col splash">
+			<img height="150" src="black.png" alt="Falafel" />
+		</div>
+		<!-- Price & Buy Button-->
+		<div class="col-2">
+			<span style="position: absolute; right: 0; font-size: x-large">5,95 €</span>
+			<button type="button" class="btn btn-default btn-block" style="position: absolute; right: 0; bottom: 0"><i class="fas fa-utensils"></i> Vorbestellen</button>
+		</div>
+	</div>
+	<br />
+	<!-- Third Line (Small Text, Description etc.)-->
+	<div class="row">
+		<!-- Text -->
+		<div class="col-2">
+			<p>
+				Melden Sie sich jetzt an, um die wirklich viel günstigeren Preise für Mitarbeiter oder Studenten zu sehen.
+			</p>
+		</div>
+		<!-- Tabs -->
+		<div class="col">
+			<ul class="nav nav-tabs" id="tab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="desc-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Beschreibung</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="ingredients-tab" data-toggle="tab" href="#ingredients" role="tab" aria-controls="ingredients" aria-selected="false">Zutaten</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="ratings-tab" data-toggle="tab" href="#ratings" role="tab" aria-controls="ratings" aria-selected="false">Bewertungen</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="tabsContent" style="padding: 5px">
+				<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="desc-tab">
+					<p>Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der <a href="#">Krautsalat</a>.</p>
+				</div>
+				<div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
+					<p>Kichererbsen, Sesam, some content.</p>
+				</div>
+				<div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
+					<form id="ratingForm" action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Benutzer" name="benutzer" style="height: 46px" />
+							<div class="bewertung form-control">
+								<input type="radio" id="star5" name="bewertung" value="5" />
+								<label for="star5" title="5 Sterne">5 Sterne</label>
+								<input type="radio" id="star4" name="bewertung" value="4" />
+								<label for="star4" title="4 Sterne">4 Sterne</label>
+								<input type="radio" id="star3" name="bewertung" value="3" checked="checked" />
+								<label for="star3" title="3 Sterne">3 Sterne</label>
+								<input type="radio" id="star2" name="bewertung" value="2" />
+								<label for="star2" title="2 Sterne">2 Sterne</label>
+								<input type="radio" id="star1" name="bewertung" value="1" />
+								<label for="star1" title="1 Stern">1 Stern</label>
+							</div>
+						</div>
+						<textarea name="bemerkung" class="form-control" rows="3" placeholder="Bemerkungen"></textarea>
+						<button class="btn btn-default" type="submit" style="float: right">Abschicken</button>
+
+						<input type="text" class="form-control" value="3144196" name="matrikel" hidden="hidden" />
+						<input type="text" class="form-control" value="nie" name="kontrolle" hidden="hidden" />
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- Nothing -->
+		<div class="col-2"></div>
+	</div>
+</body>
+</html>
