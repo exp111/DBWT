@@ -1,4 +1,5 @@
 ﻿@using System.Configuration
+@using System.Data
 @using MySql.Data.MySqlClient
 @functions
 {
@@ -26,8 +27,8 @@
 	String id = Request.QueryString["id"];
 
 	string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-	Mahlzeit mahlzeit = new Mahlzeit(){ID = 0, Beschreibung = "no u", Name = "Falafel"};
-	Preis preis = new Preis() {ID = 0, Gastpreis = 5.95, MAPreis = 5.95, Studentpreis = 5.95};
+	Mahlzeit mahlzeit = new Mahlzeit(){ID = 1, Beschreibung = "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat.", Name = "Falafel"};
+	Preis preis = new Preis() {ID = 1, Gastpreis = 5.95, MAPreis = 5.95, Studentpreis = 5.95};
 	List<String> zutaten = new List<string>();
 	using (MySqlConnection con = new MySqlConnection(constr))
 	{
@@ -45,7 +46,8 @@
 					{
 						ID = Convert.ToInt32(reader["ID"]),
 						//Name = reader["Name"].ToString(),
-						Beschreibung = reader["Beschreibung"].ToString()
+						Beschreibung = reader["Beschreibung"].ToString(),
+						Vorrat = Convert.ToInt32(reader["Vorrat"])
 					};
 				}
 			}
@@ -84,21 +86,23 @@
 			}
 		}
 		// Get Zutaten Details
-		query = $"SELECT * FROM Zutaten WHERE ID in ({string.Join(",", ids)})";
-		using (MySqlCommand cmd = new MySqlCommand(query))
+		if (ids.Count > 0)
 		{
-			cmd.Connection = con;
-			using (MySqlDataReader reader = cmd.ExecuteReader())
+			query = $"SELECT * FROM Zutaten WHERE ID in ({string.Join(",", ids)})";
+			using (MySqlCommand cmd = new MySqlCommand(query))
 			{
-				while (reader.Read())
+				cmd.Connection = con;
+				using (MySqlDataReader reader = cmd.ExecuteReader())
 				{
-					zutaten.Add(reader["Name"].ToString());
+					while (reader.Read())
+					{
+						zutaten.Add(reader["Name"].ToString());
+					}
 				}
 			}
 		}
 		con.Close();
 	}
-
 }
 <!DOCTYPE html>
 <html>
