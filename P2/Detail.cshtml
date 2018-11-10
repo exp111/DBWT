@@ -32,63 +32,11 @@
 	List<String> zutaten = new List<string>();
 	using (MySqlConnection con = new MySqlConnection(constr))
 	{
-		con.Open();
-		// Get Mahlzeit Details
-		string query = $"SELECT * FROM Mahlzeiten WHERE ID = {id}";
-		using (MySqlCommand cmd = new MySqlCommand(query))
+		try
 		{
-			cmd.Connection = con;
-			using (MySqlDataReader reader = cmd.ExecuteReader())
-			{
-				while (reader.Read())
-				{
-					mahlzeit = new Mahlzeit
-					{
-						ID = Convert.ToInt32(reader["ID"]),
-						//Name = reader["Name"].ToString(),
-						Beschreibung = reader["Beschreibung"].ToString(),
-						Vorrat = Convert.ToInt32(reader["Vorrat"])
-					};
-				}
-			}
-		}
-		// Get Price
-		query = $"SELECT * FROM Preise WHERE ID = {id}";
-		using (MySqlCommand cmd = new MySqlCommand(query))
-		{
-			cmd.Connection = con;
-			using (MySqlDataReader reader = cmd.ExecuteReader())
-			{
-				while (reader.Read())
-				{
-					preis = new Preis
-					{
-						ID = Convert.ToInt32(reader["ID"]),
-						Gastpreis = Convert.ToDouble(reader["Gastpreis"]),
-						MAPreis = Convert.ToDouble(reader["MA-Preis"]),
-						Studentpreis = Convert.ToDouble(reader["Studentpreis"])
-					};
-				}
-			}
-		}
-		// Get Zutaten
-		List<int> ids = new List<int>();
-		query = $"SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}";
-		using (MySqlCommand cmd = new MySqlCommand(query))
-		{
-			cmd.Connection = con;
-			using (MySqlDataReader reader = cmd.ExecuteReader())
-			{
-				while (reader.Read())
-				{
-					ids.Add(Convert.ToInt32(reader["Zutat"]));
-				}
-			}
-		}
-		// Get Zutaten Details
-		if (ids.Count > 0)
-		{
-			query = $"SELECT * FROM Zutaten WHERE ID in ({string.Join(",", ids)})";
+			con.Open();
+			// Get Mahlzeit Details
+			string query = $"SELECT * FROM Mahlzeiten WHERE ID = {id}";
 			using (MySqlCommand cmd = new MySqlCommand(query))
 			{
 				cmd.Connection = con;
@@ -96,12 +44,71 @@
 				{
 					while (reader.Read())
 					{
-						zutaten.Add(reader["Name"].ToString());
+						mahlzeit = new Mahlzeit
+						{
+							ID = Convert.ToInt32(reader["ID"]),
+							//Name = reader["Name"].ToString(),
+							Beschreibung = reader["Beschreibung"].ToString(),
+							Vorrat = Convert.ToInt32(reader["Vorrat"])
+						};
 					}
 				}
 			}
+			// Get Price
+			query = $"SELECT * FROM Preise WHERE ID = {id}";
+			using (MySqlCommand cmd = new MySqlCommand(query))
+			{
+				cmd.Connection = con;
+				using (MySqlDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						preis = new Preis
+						{
+							ID = Convert.ToInt32(reader["ID"]),
+							Gastpreis = Convert.ToDouble(reader["Gastpreis"]),
+							MAPreis = Convert.ToDouble(reader["MA-Preis"]),
+							Studentpreis = Convert.ToDouble(reader["Studentpreis"])
+						};
+					}
+				}
+			}
+			// Get Zutaten
+			List<int> ids = new List<int>();
+			query = $"SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}";
+			using (MySqlCommand cmd = new MySqlCommand(query))
+			{
+				cmd.Connection = con;
+				using (MySqlDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						ids.Add(Convert.ToInt32(reader["Zutat"]));
+					}
+				}
+			}
+			// Get Zutaten Details
+			if (ids.Count > 0)
+			{
+				query = $"SELECT * FROM Zutaten WHERE ID in ({string.Join(",", ids)})";
+				using (MySqlCommand cmd = new MySqlCommand(query))
+				{
+					cmd.Connection = con;
+					using (MySqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							zutaten.Add(reader["Name"].ToString());
+						}
+					}
+				}
+			}
+			con.Close();
 		}
-		con.Close();
+		catch (Exception e)
+		{
+			<p>@e.Message</p>
+		}
 	}
 }
 <!DOCTYPE html>
