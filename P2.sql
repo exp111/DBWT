@@ -269,26 +269,26 @@ INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00014
 INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (1, "Falafel", "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat.", 2);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (1, 2018, 5.95, 4.95, 3.95);
 
-INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (1, "Curry Wok", " Curry Wok", 1);
-INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (1, 2018, 5.95, 4.95, 3.95);
-
-INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (2, "Schnitzel", " Schnitzel", 1);
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (2, "Curry Wok", " Curry Wok", 1);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (2, 2018, 5.95, 4.95, 3.95);
 
-INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (3, "Bratrolle", " Bratrolle", 1);
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (3, "Schnitzel", " Schnitzel", 1);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (3, 2018, 5.95, 4.95, 3.95);
 
-INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (4, "Krautsalat", " Krautsalat", 1);
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (4, "Bratrolle", " Bratrolle", 0);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (4, 2018, 5.95, 4.95, 3.95);
 
-INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (5, "Currywurst", " Currywurst", 1);
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (5, "Krautsalat", " Krautsalat", 1);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (5, 2018, 5.95, 4.95, 3.95);
 
-INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (6, "Käsestulle", " Käsestulle", 1);
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (6, "Currywurst", " Currywurst", 1);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (6, 2018, 5.95, 4.95, 3.95);
 
-INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (7, "Spiegelei", " Spiegelei", 1);
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (7, "Käsestulle", " Käsestulle", 1);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (7, 2018, 5.95, 4.95, 3.95);
+
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (8, "Spiegelei", " Spiegelei", 1);
+INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (8, 2018, 5.95, 4.95, 3.95);
 
 # Mahlzeiten mit Zutaten verbinden
 INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 0);
