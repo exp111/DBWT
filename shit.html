@@ -1,0 +1,45 @@
+<html>
+<head>
+    <title>P2 Mahlzeit Statements</title>
+</head>
+<body>
+    <input type="number" placeholder="start id" id="startid" value="1">
+    <input type="number" placeholder="year" value="2018" id="year">
+    <br>
+    <textarea id="input" placeholder="input (name, desc, gprice, maprice, sprice)" style="width:100%; height: 150px">Falafel, Teigtasche mit Falafel,5.95,4.95,3.95</textarea>
+    <br>
+    <button style="margin-top: 10px; margin-bottom: 10px" onclick="justdoit()">do it</button>
+    <br>
+    <textarea id="output" placeholder="output" style="width:100%; height: 150px"></textarea>
+    <br>
+</body>
+<script>
+    function justdoit()
+    {
+        var text = document.getElementById("input").value;
+        var lines = text.split(/\n/);
+        console.debug(text)
+        var output = document.getElementById("output");
+        
+        var curID = parseInt(document.getElementById("startid").value);
+        var year = document.getElementById("year").value;
+        output.innerHTML = "";
+        for (var i = 0; i < lines.length; i++)
+        {
+            var curLine = lines[i];
+            if (curLine.length == 0)
+                continue;
+            var curLines = curLine.split(/,/);
+            if (curLines.length != 5)
+                continue;
+            
+            
+            
+            output.value = output.value.concat("INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES ("+ curID + ", \""+curLines[0]+"\", \""+ curLines[1]+"\", 1);\n");
+output.value = output.value.concat("INSERT INTO Preise(ID, Jahr, Gastpreis, \`MA-Preis\`, Studentpreis) VALUES ("+curID+", "+year+", "+curLines[2]+", "+curLines[3]+", "+curLines[4]+");\n\n");
+            
+            curID += 1;
+        }
+    }
+</script>
+</html>
