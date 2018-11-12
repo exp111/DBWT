@@ -47,7 +47,7 @@
 						mahlzeit = new Mahlzeit
 						{
 							ID = Convert.ToInt32(reader["ID"]),
-							//Name = reader["Name"].ToString(),
+							Name = reader["Name"].ToString(),
 							Beschreibung = reader["Beschreibung"].ToString(),
 							Vorrat = Convert.ToInt32(reader["Vorrat"])
 						};
@@ -142,7 +142,7 @@
 		</div>
 		<!-- Picture -->
 		<div class="col splash">
-			<img height="150" src="black.png" alt="Falafel" />
+			<img height="150" src="black.png" alt="@mahlzeit.Name" />
 		</div>
 		<!-- Price & Buy Button-->
 		<div class="col-2">

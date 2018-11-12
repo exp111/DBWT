@@ -225,6 +225,7 @@ CREATE TABLE FHAngehörigerGehörtZuFachbereich(
   FOREIGN KEY (Fachbereich) REFERENCES Fachbereiche(ID)
 );
 
+ALTER TABLE Mahlzeiten ADD COLUMN Name VARCHAR(50) NOT NULL;
 
 -- Insert some Values
 INSERT INTO Benutzer(`E-Mail`, Nutzername, Anlegedatum, Aktiv, Vorname, Nachname, Salt, Hash)
@@ -264,7 +265,7 @@ INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00012
 INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00013, "Barsch", false, false, false, true);
 INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00014, "Branntweiness9g", false, true, true, true);
 
-INSERT INTO Mahlzeiten(ID, Beschreibung, Vorrat) VALUES (1, "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat.", 2);
+INSERT INTO Mahlzeiten(ID, Name, Beschreibung, Vorrat) VALUES (1, "Falafel", "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat.", 2);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (1, 2018, 5.95, 4.95, 3.95);
 
 INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 0);
