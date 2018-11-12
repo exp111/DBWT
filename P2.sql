@@ -250,6 +250,19 @@ INSERT INTO Studenten(Nummer, Matrikelnummer, Studiengang) VALUES(4, 123456789, 
 INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00000, "Amaranth", true, true, true, true);
 INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00001, "Champignons", true, true, true, true);
 INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00002, "Fenchel", true, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00003, "Hanfmehl", true, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00004, "Heilbutt", true, false, false, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00005, "Kurkumin", true, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00006, "Lachs", true, false, false, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00007, "Paprika", true, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00008, "Sojasprossen", true, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00009, "Weizenmehl", true, true, true, false);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00010, "Zitronensäure", true, true, true, true);
+# Not bio
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00011, "Aal", false, false, false, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00012, "Alginat", false, true, true, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00013, "Barsch", false, false, false, true);
+INSERT INTO Zutaten(ID, Name, Bio, Vegetarisch, Vegan, Glutenfrei) VALUES (00014, "Branntweiness9g", false, true, true, true);
 
 INSERT INTO Mahlzeiten(ID, Beschreibung, Vorrat) VALUES (1, "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat.", 2);
 INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (1, 2018, 5.95, 4.95, 3.95);
@@ -257,3 +270,8 @@ INSERT INTO Preise(ID, Jahr, Gastpreis, `MA-Preis`, Studentpreis) VALUES (1, 201
 INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 0);
 INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 2);
 
+INSERT INTO Kategorien(Bezeichnung) VALUES ("Essen");
+INSERT INTO Kategorien(Bezeichnung) VALUES ("Weird Essen");
+
+#CREATE USER IF NOT EXISTS 'webapp'@'localhost' IDENTIFIED BY 'popo';
+#GRANT SELECT, USAGE ON dbwt.* TO 'webapp'@'localhost';

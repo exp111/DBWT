@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient
+<!DOCTYPE html>
 @functions{
 	class Mahlzeit
 	{
@@ -8,13 +10,76 @@
 		public int Vorrat { get; set; }
 		public bool verfügbar { get; set; }
 	};
+
+	class Kategorie
+	{
+		public int ID { get; set; }
+		public String Bezeichnung { get; set; }
+		public int HatBilder { get; set; }
+		public int Parent { get; set; }
+	}
 }
 @{
 	Layout = "~/_Layout.cshtml";
 	Page.title = "Produkte";
 
-	uint columns = 4;
-	uint rows = 2;
+	const int columns = 4;
+	const int rows = 2;
+
+	List<Kategorie> kategorien = new List<Kategorie>();
+	List<Mahlzeit> mahlzeiten = new List<Mahlzeit>();
+	string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+	using (MySqlConnection con = new MySqlConnection(constr))
+	{
+		try
+		{
+			con.Open();
+			// Get Kategorien
+			string query = "SELECT * FROM Kategorien";
+			using (MySqlCommand cmd = new MySqlCommand(query))
+			{
+				cmd.Connection = con;
+				using (MySqlDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						kategorien.Add(new Kategorie
+						{
+							ID = Convert.ToInt32(reader["ID"]),
+							Bezeichnung = reader["Bezeichnung"].ToString(),
+							HatBilder = Convert.ToInt32(reader["HatBilder"]),
+							Parent = Convert.ToInt32(reader["Parent"])
+						});
+					}
+				}
+			}
+			// Get Mahlzeiten
+			query = "SELECT * FROM Mahlzeiten";
+			using (MySqlCommand cmd = new MySqlCommand(query))
+			{
+				cmd.Connection = con;
+				using (MySqlDataReader reader = cmd.ExecuteReader())
+				{		
+					while (reader.Read())
+					{
+						mahlzeiten.Add(new Mahlzeit
+						{
+							ID = Convert.ToInt32(reader["ID"]),
+							//Name = reader["Name"].ToString(),
+							Beschreibung = reader["Beschreibung"].ToString(),
+							Vorrat = Convert.ToInt32(reader["Vorrat"]),
+							verfügbar = Convert.ToBoolean(reader["verfÃ¼gbar"])
+						});
+					}
+				}
+			}
+			con.Close();
+		}
+		catch (Exception e)
+		{
+			<p>@e.Message</p>
+		}
+	}
 }
 <html>
 <body>
@@ -29,17 +94,20 @@
 	<div class="row">
 		<!-- Filter Form-->
 		<div class="col-2">
-			<form>
+			<form method="post">
 				<fieldset>
 					<legend>Speisenliste filtern</legend>
-					<select class="form-control" id="filterCategory">
+					<select class="form-control" name="filterCategory" id="filterCategory">
 						<optgroup label="Kategorien">
-							<option value="Kategorien">Kategorien</option>
+							@foreach (Kategorie kategorie in kategorien)
+							{
+								<option value="@kategorie.ID" selected="@(Request["filterCategory"] == kategorie.ID.ToString())">@kategorie.Bezeichnung</option>
+							}
 						</optgroup>
 					</select><br />
-					<input type="checkbox" id="filterAvailable" value="available"> nur verfügbar<br>
-					<input type="checkbox" id="filterVegetarian" value="vegetarian"> nur vegetarische<br>
-					<input type="checkbox" id="filterVegan" value="vegan"> nur vegane<br>
+					<input type="checkbox" name="filterAvailable" id="filterAvailable" value="available" checked="@Request["filterAvailable"]"> nur verfügbar<br>
+					<input type="checkbox" name="filterVegetarian" id="filterVegetarian" value="vegetarian" checked="@Request["filterVegetarian"]"> nur vegetarische<br>
+					<input type="checkbox" name="filterVegan" id="filterVegan" value="vegan" checked="@Request["filterVegan"]"> nur vegane<br>
 					<br /><br />
 					<button class="btn btn-default btn-block">Speisen filtern</button>
 				</fieldset>
@@ -49,53 +117,27 @@
 		<div class="col">
 			<!-- Food Container -->
 			<div class="container" id="foodContainer">
-				<!-- First Line -->
-				<div class="row">
-					<div class="col">
-						<img src="black.png" width="100" height="100" alt="Curry Wok"/><br/>
-						Curry Wok<br/>
-						<a href="Detail.cshtml?id=1">Details</a>
+				@for (int i = 0; i < rows && i * columns < mahlzeiten.Count; i++)
+				{
+					<div class="row">
+						@for (int j = 0; j < columns && i * columns + j < mahlzeiten.Count; j++)
+						{
+							Mahlzeit cur = mahlzeiten[i * columns + j];
+							<div class="col @(cur.verfügbar ? "" : " disabled")">
+								<img src="black.png" width="100" height="100" alt="@cur.Name" /><br />
+								@cur.Name<br />
+								@if (cur.verfügbar)
+								{
+									<a href="Detail.cshtml?id=@cur.ID">Details</a>
+								}
+								else
+								{
+									<span>vergriffen</span>
+								}
+							</div>
+						}
 					</div>
-					<div class="col">
-						<img src="black.png" width="100" height="100" alt="Schnitzel"/><br/>
-						Schnitzel<br/>
-						<a href="Detail.cshtml?id=1">Details</a>
-					</div>
-					<div class="col disabled">
-						<img src="black.png" width="100" height="100" alt="Bratrolle"/><br/>
-						Bratrolle<br/>
-						vergriffen
-					</div>
-					<div class="col">
-						<img src="black.png" width="100" height="100" alt="Krautsalat"/><br/>
-						Krautsalat<br/>
-						<a href="Detail.cshtml?id=1">Details</a>
-					</div>
-				</div>
-				<br/>
-				<!-- Second Line -->
-				<div class="row">
-					<div class="col">
-						<img src="black.png" width="100" height="100" alt="Falafel"/><br/>
-						Falafel<br/>
-						<a href="Detail.cshtml?id=1">Details</a>
-					</div>
-					<div class="col">
-						<img src="black.png" width="100" height="100" alt="Currywurst"/><br/>
-						Currywurst<br/>
-						<a href="Detail.cshtml?id=1">Details</a>
-					</div>
-					<div class="col">
-						<img src="black.png" width="100" height="100" alt="Käsestulle"/><br/>
-						Käsestulle<br/>
-						<a href="Detail.cshtml?id=1">Details</a>
-					</div>
-					<div class="col">
-						<img src="black.png" width="100" height="100" alt="Spiegelei"/><br/>
-						Spiegelei<br/>
-						<a href="Detail.cshtml?id=1">Details</a>
-					</div>
-				</div>
+				}
 			</div>
 		</div>
 	</div>
