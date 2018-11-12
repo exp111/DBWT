@@ -47,8 +47,8 @@
 						{
 							ID = Convert.ToInt32(reader["ID"]),
 							Bezeichnung = reader["Bezeichnung"].ToString(),
-							HatBilder = Convert.ToInt32(reader["HatBilder"]),
-							Parent = Convert.ToInt32(reader["Parent"])
+							//HatBilder = Convert.ToInt32(reader["HatBilder"]),
+							//Parent = Convert.ToInt32(reader["Parent"])
 						});
 					}
 				}
@@ -68,7 +68,7 @@
 							Name = reader["Name"].ToString(),
 							Beschreibung = reader["Beschreibung"].ToString(),
 							Vorrat = Convert.ToInt32(reader["Vorrat"]),
-							verfügbar = Convert.ToBoolean(reader["verfÃ¼gbar"])
+							verfügbar = Convert.ToBoolean(reader["verfügbar"])
 						});
 					}
 				}

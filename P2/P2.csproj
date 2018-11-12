@@ -119,6 +119,7 @@
     </None>
     <Content Include="_Layout.cshtml" />
     <Content Include="Zutaten.cshtml" />
+    <Content Include="App_Code\LayoutHelper.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

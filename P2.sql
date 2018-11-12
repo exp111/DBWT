@@ -274,5 +274,5 @@ INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 2);
 INSERT INTO Kategorien(Bezeichnung) VALUES ("Essen");
 INSERT INTO Kategorien(Bezeichnung) VALUES ("Weird Essen");
 
-#CREATE USER IF NOT EXISTS 'webapp'@'localhost' IDENTIFIED BY 'popo';
-#GRANT SELECT, USAGE ON dbwt.* TO 'webapp'@'localhost';
+CREATE USER IF NOT EXISTS 'webapp'@'localhost' IDENTIFIED BY 'popo';
+GRANT SELECT, USAGE ON dbwt.* TO 'webapp'@'localhost';

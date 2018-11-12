@@ -27,8 +27,8 @@
 	String id = Request.QueryString["id"];
 
 	string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-	Mahlzeit mahlzeit = new Mahlzeit(){ID = 1, Beschreibung = "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat.", Name = "Falafel"};
-	Preis preis = new Preis() {ID = 1, Gastpreis = 5.95, MAPreis = 5.95, Studentpreis = 5.95};
+	Mahlzeit mahlzeit = new Mahlzeit(){ID = 1, Name = "Falafel", Beschreibung = "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat."};
+	Preis preis = new Preis() {ID = 1, Gastpreis = 5.95, MAPreis = 4.95, Studentpreis = 3.95};
 	List<String> zutaten = new List<string>();
 	using (MySqlConnection con = new MySqlConnection(constr))
 	{
