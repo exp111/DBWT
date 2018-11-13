@@ -9,6 +9,7 @@
 		public string Beschreibung { get; set; }
 		public int Vorrat { get; set; }
 		public bool verfügbar { get; set; }
+		public int inKategorie { get; set; }
 	};
 
 	class Kategorie
@@ -59,7 +60,7 @@
 			{
 				cmd.Connection = con;
 				using (MySqlDataReader reader = cmd.ExecuteReader())
-				{		
+				{
 					while (reader.Read())
 					{
 						mahlzeiten.Add(new Mahlzeit
@@ -68,16 +69,75 @@
 							Name = reader["Name"].ToString(),
 							Beschreibung = reader["Beschreibung"].ToString(),
 							Vorrat = Convert.ToInt32(reader["Vorrat"]),
-							verfügbar = Convert.ToBoolean(reader["verfügbar"])
+							verfügbar = Convert.ToBoolean(reader["verfügbar"]),
+							inKategorie = (reader["inKategorie"] != DBNull.Value ? Convert.ToInt32(reader["inKategorie"]) : 0)
 						});
 					}
 				}
 			}
+			/*
+			// Get Bilder
+			List<int> bildIds = new List<int>();
+			query = $"SELECT Bild FROM MahlzeitHatBilder WHERE Mahlzeit in ({string.Join(",", mahlzeiten.Select(m => m.ID).ToList())})";
+			using (MySqlCommand cmd = new MySqlCommand(query))
+			{
+				cmd.Connection = con;
+				using (MySqlDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						bildIds.Add(Convert.ToInt32(reader["Bild"]));
+					}
+				}
+			}
+			// Get Bilder Details
+			if (bildIds.Count > 0)
+			{
+				query = $"SELECT * FROM Bilder WHERE ID in ({string.Join(",", bildIds)})";
+				using (MySqlCommand cmd = new MySqlCommand(query))
+				{
+					cmd.Connection = con;
+					using (MySqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							bilder.Add(new Bild
+							{
+								ID = Convert.ToInt32(reader["ID"]),
+								Alttext = reader["Alt-Text"].ToString(),
+								Titel = reader["Titel"].ToString(),
+								binärdaten = "data:image/jpg;base64," + Convert.ToBase64String((byte[])reader["Binärdaten"])
+							});
+						}
+					}
+				}
+			}*/
 			con.Close();
 		}
 		catch (Exception e)
 		{
 			<p>@e.Message</p>
+		}
+
+		//Filter Stuff
+		if (IsPost)
+		{
+			bool checkCategory = !Request["filterCategory"].IsEmpty();
+			int category = Convert.ToInt32(Request["filterCategory"]);
+
+			bool checkAvailable = Request["filterAvailable"] != null;
+			bool available = checkAvailable && Request["filterAvailable"] == "available";
+
+			bool checkVegetarian = Request["filterVegetarian"] != null;
+			bool vegetarian = checkVegetarian && Request["filterVegetarian"] == "vegetarian";
+
+			bool checkVegan = Request["filterVegan"] != null;
+			bool vegan = checkVegan && Request["filterVegan"] == "vegan";
+
+			mahlzeiten = mahlzeiten.Where(m => (!checkCategory || m.inKategorie == category) &&
+			                                   (!checkAvailable || m.verfügbar == available)).ToList(); //&& 
+			//(!checkVegetarian ||  == vegetarian) && 
+			//(!checkVegan || f.Vegan == vegan)).ToList();
 		}
 	}
 }
@@ -99,6 +159,7 @@
 					<legend>Speisenliste filtern</legend>
 					<select class="form-control" name="filterCategory" id="filterCategory">
 						<optgroup label="Kategorien">
+							<option value="0" selected="@(Request["filterCategory"] == "0")">Alle</option>
 							@foreach (Kategorie kategorie in kategorien)
 							{
 								<option value="@kategorie.ID" selected="@(Request["filterCategory"] == kategorie.ID.ToString())">@kategorie.Bezeichnung</option>

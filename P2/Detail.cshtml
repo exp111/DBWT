@@ -19,6 +19,14 @@
 		public double MAPreis { get; set; }
 		public double Studentpreis { get; set; }
 	}
+
+	class Bild
+	{
+		public int ID { get; set; }
+		public string Titel { get; set; }
+		public string Alttext { get; set; }
+		public string binärdaten { get; set; }
+	}
 }
 @{
 	Layout = "~/_Layout.cshtml";
@@ -30,6 +38,7 @@
 	Mahlzeit mahlzeit = new Mahlzeit(){ID = 1, Name = "Falafel", Beschreibung = "Teigtasche mit Falafel aus Kichererbsen und Sesam, dazu passt hervorragend der Krautsalat."};
 	Preis preis = new Preis() {ID = 1, Gastpreis = 5.95, MAPreis = 4.95, Studentpreis = 3.95};
 	List<String> zutaten = new List<string>();
+	List<Bild> bilder = new List<Bild>();
 	using (MySqlConnection con = new MySqlConnection(constr))
 	{
 		try
@@ -74,7 +83,7 @@
 				}
 			}
 			// Get Zutaten
-			List<int> ids = new List<int>();
+			List<int> zutatenIds = new List<int>();
 			query = $"SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}";
 			using (MySqlCommand cmd = new MySqlCommand(query))
 			{
@@ -83,14 +92,14 @@
 				{
 					while (reader.Read())
 					{
-						ids.Add(Convert.ToInt32(reader["Zutat"]));
+						zutatenIds.Add(Convert.ToInt32(reader["Zutat"]));
 					}
 				}
 			}
 			// Get Zutaten Details
-			if (ids.Count > 0)
+			if (zutatenIds.Count > 0)
 			{
-				query = $"SELECT * FROM Zutaten WHERE ID in ({string.Join(",", ids)})";
+				query = $"SELECT * FROM Zutaten WHERE ID in ({string.Join(",", zutatenIds)})";
 				using (MySqlCommand cmd = new MySqlCommand(query))
 				{
 					cmd.Connection = con;
@@ -103,11 +112,48 @@
 					}
 				}
 			}
+			// Get Bilder
+			List<int> bildIds = new List<int>();
+			query = $"SELECT Bild FROM MahlzeitHatBilder WHERE Mahlzeit = {id}";
+			using (MySqlCommand cmd = new MySqlCommand(query))
+			{
+				cmd.Connection = con;
+				using (MySqlDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						bildIds.Add(Convert.ToInt32(reader["Bild"]));
+					}
+				}
+			}
+			// Get Bilder Details
+			if (bildIds.Count > 0)
+			{
+				query = $"SELECT * FROM Bilder WHERE ID in ({string.Join(",", bildIds)})";
+				using (MySqlCommand cmd = new MySqlCommand(query))
+				{
+					cmd.Connection = con;
+					using (MySqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							bilder.Add(new Bild
+							{
+								ID = Convert.ToInt32(reader["ID"]),
+								Alttext = reader["Alt-Text"].ToString(),
+								Titel = reader["Titel"].ToString(),
+								binärdaten = "data:image/jpg;base64," + Convert.ToBase64String((byte[])reader["Binärdaten"])
+							});
+						}
+					}
+				}
+			}
 			con.Close();
 		}
 		catch (Exception e)
 		{
 			<p>@e.Message</p>
+			con.Close();
 		}
 	}
 }
@@ -120,7 +166,7 @@
 		<div class="col-2"></div>
 		<!-- Title -->
 		<div class="col" style="left: 0; top: 0">
-			<h2>Details für "Falafel"</h2>
+			<h2>Details für "@mahlzeit.Name"</h2>
 		</div>
 		<!-- Guest Price -->
 		<div class="col-2">
@@ -142,7 +188,14 @@
 		</div>
 		<!-- Picture -->
 		<div class="col splash">
-			<img height="150" src="black.png" alt="@mahlzeit.Name" />
+			@if (bilder.Count > 0)
+			{ 
+				<img height="150" src="@bilder[0].binärdaten" alt="@bilder[0].Alttext"/>
+			}
+			else
+			{
+				<p class="error">Es kann kein Bild gezeigt werden </p>
+			}
 		</div>
 		<!-- Price & Buy Button-->
 		<div class="col-2">
