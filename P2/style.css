@@ -61,6 +61,17 @@ button /* Color buttons in fh colors */
     color: white;
 }
 
+.raise /* Color buttons in fh colors */
+{
+    transition: 0.25s;
+}
+
+.raise:hover,
+.raise:focus {
+    box-shadow: 0 0.5em 0.5em -0.4em turquoise;
+    transform: translateY(-0.25em);
+}
+
 nav a /* Set transition time for zoom & shadow */
 {
     transition: 0.5s;

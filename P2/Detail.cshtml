@@ -1,4 +1,6 @@
-﻿@using System.Configuration
+﻿<!DOCTYPE html>
+<html lang="de">
+@using System.Configuration
 @using System.Data
 @using MySql.Data.MySqlClient
 @functions
@@ -157,8 +159,6 @@
 		}
 	}
 }
-<!DOCTYPE html>
-<html>
 <body>
 	<!-- First Line (Title, Guest Price) -->
 	<div class="row">
@@ -200,7 +200,7 @@
 		<!-- Price & Buy Button-->
 		<div class="col-2">
 			<span style="position: absolute; right: 0; font-size: x-large">@preis.Gastpreis €</span>
-			<button type="button" class="btn btn-default btn-block" style="position: absolute; right: 0; bottom: 0"><i class="fas fa-utensils"></i> Vorbestellen</button>
+			<button type="button" class="btn btn-default btn-block raise" style="position: absolute; right: 0; bottom: 0"><i class="fas fa-utensils"></i> Vorbestellen</button>
 		</div>
 	</div>
 	<br />

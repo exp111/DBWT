@@ -296,7 +296,7 @@ INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 0);
 INSERT INTO MahlzeitEnthältZutat(Mahlzeit, Zutat) VALUES (1, 2);
 
 # Mahlzeiten mit Bildern verbinden
-INSERT INTO MahlzeitHatBilder(Mahlzeit, Bild) VALUES(6,1);
+#INSERT INTO MahlzeitHatBilder(Mahlzeit, Bild) VALUES(6,1);
 
 INSERT INTO Kategorien(Bezeichnung) VALUES ("Essen");
 INSERT INTO Kategorien(Bezeichnung) VALUES ("Weird Essen");

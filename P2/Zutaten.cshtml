@@ -1,4 +1,6 @@
-﻿@using System.Configuration
+﻿<!DOCTYPE html>
+<html lang="de">
+@using System.Configuration
 @using MySql.Data.MySqlClient;
 @{
 	Layout = "~/_Layout.cshtml";
@@ -21,15 +23,13 @@
 {
 	if (bio)
 	{
-		<img src="bio.svg" height="25"/>
+		<img src="bio.svg" height="25" alt="Bio Logo"/>
 	}
 }
 @helper FlagIcon(bool flag)
 {
 	<i class="far @(flag ? "fa-check-circle" : "fa-circle")"></i>
 }
-<!DOCTYPE html>
-<html>
 <body>
 	<div class="table-responsive">
 		<table class="table table-hover">

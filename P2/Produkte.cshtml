@@ -1,6 +1,7 @@
-﻿@using System.Configuration
+﻿<!DOCTYPE html>
+<html lang="de">
+@using System.Configuration
 @using MySql.Data.MySqlClient
-<!DOCTYPE html>
 @functions{
 	class Mahlzeit
 	{
@@ -141,7 +142,6 @@
 		}
 	}
 }
-<html>
 <body>
 	<!-- First Line (Title) -->
 	<div class="row" style="margin: auto; text-align: center">
@@ -170,7 +170,7 @@
 					<input type="checkbox" name="filterVegetarian" id="filterVegetarian" value="vegetarian" checked="@Request["filterVegetarian"]"> nur vegetarische<br>
 					<input type="checkbox" name="filterVegan" id="filterVegan" value="vegan" checked="@Request["filterVegan"]"> nur vegane<br>
 					<br /><br />
-					<button class="btn btn-default btn-block">Speisen filtern</button>
+					<button class="btn btn-default btn-block raise">Speisen filtern</button>
 				</fieldset>
 			</form>
 		</div>
