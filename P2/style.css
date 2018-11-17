@@ -70,14 +70,14 @@ h1,h2,h3
     width: 100%;
 }
 
-a, a:link, a:visited /* fh mint for links (visited and unvisited) */
+a, a:link, a:visited, a:hover /* fh mint for links (visited and unvisited) */
 {
     color: rgb(0, 177, 172);
     text-decoration: none;
     position: relative; /* Position for underline animation */
 }
 
-    p > a:before /* Prepare Fancy animation */
+    :not(li) > a:before /* Prepare Fancy animation; not on list items */
     {
         content: "";
         position: absolute;
@@ -93,7 +93,7 @@ a, a:link, a:visited /* fh mint for links (visited and unvisited) */
         transition: all .25s cubic-bezier(1,.25,0,.75) 0s;
     }
 
-    p > a:hover:before /* Fancy Animation */
+    :not(li) > a:hover:before /* Fancy Animation */
     {
         visibility: visible;
         -webkit-transform: scaleX(1);
