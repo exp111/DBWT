@@ -1,6 +1,27 @@
-﻿body /* Typical FH fonts */
+﻿/* Include Clan Fonts */
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-Book.eot');font-weight: 100;font-style: normal;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-Book.woff');font-weight: 100;font-style: normal;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-BookItalic.eot');font-weight: 100;font-style: italic;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-BookItalic.woff');font-weight: 100;font-style: italic;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-News.eot');font-weight: normal;font-style: normal;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-News.woff');font-weight: normal;font-style: normal;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-NewsItalic.eot');font-weight: normal;font-style: italic;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-NewsItalic.woff');font-weight: normal;font-style: italic;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-Bold.eot');font-weight: bold;font-style: normal;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-Bold.woff');font-weight: bold;font-style: normal;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-BoldItalic.eot');font-weight: bold;font-style: italic;}
+@font-face {font-family: Clan;src: url('fonts/ClanWeb-BoldItalic.woff');font-weight: bold;font-style: italic;}
+
+body /* Typical FH fonts */
 {
-    font-family: Clan, Verdana, Geneva, sans-serif;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+h1,h2,h3 
+{
+    font-family: Clan;
+    font-weight:normal;
+    font-style:normal;
 }
 
 #header, #footer /* All in one line Header */
@@ -49,11 +70,35 @@
     width: 100%;
 }
 
-a:visited, /* fh mint for links (visited and unvisited) */
-a:link
+a, a:link, a:visited /* fh mint for links (visited and unvisited) */
 {
     color: rgb(0, 177, 172);
+    text-decoration: none;
+    position: relative; /* Position for underline animation */
 }
+
+    p > a:before /* Prepare Fancy animation */
+    {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: rgb(0, 177, 172);
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all .25s cubic-bezier(1,.25,0,.75) 0s;
+        transition: all .25s cubic-bezier(1,.25,0,.75) 0s;
+    }
+
+    p > a:hover:before /* Fancy Animation */
+    {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1);
+    }
 
 button /* Color buttons in fh colors */
 {
@@ -66,22 +111,24 @@ button /* Color buttons in fh colors */
     transition: 0.25s;
 }
 
-.raise:hover,
-.raise:focus {
-    box-shadow: 0 0.5em 0.5em -0.4em turquoise;
-    transform: translateY(-0.25em);
-}
+    .raise:hover,
+    .raise:focus
+    {
+        box-shadow: 0 0.5em 0.5em -0.4em turquoise;
+        transform: translateY(-0.25em);
+    }
 
 nav a /* Set transition time for zoom & shadow */
 {
+    font-family: Clan;
     transition: 0.5s;
+    font-size:large;
 }
 
     nav a:hover /* Remove Underline and add shadow & zoom to show which is selected */
     {
-        text-shadow: 0px 0px 1px #000000;
+        text-shadow: 0px 0px 3px #000000;
         text-decoration: none;
-        font-size: large;
     }
 
 fieldset /* Reactivate the border cuz bootstrap disables it */
