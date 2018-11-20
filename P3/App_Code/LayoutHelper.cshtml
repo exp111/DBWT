@@ -1,0 +1,49 @@
+﻿@helper RenderHeader()
+{
+	<header class="row" id="header">
+		<!-- Title -->
+		<div class="col" id="headerTitle">
+			<h1 style="margin-top: 0.2em"><span style="color: rgb(0, 177, 172)">e</span>Mensa</h1>
+		</div>
+		<!-- Nav -->
+		<nav class="col navbar" id="headerNavbar">
+			<ul>
+				<li class="horizontal first"><a href="Start">Start</a></li>
+				<li class="horizontal"><a href="Produkte">Mahlzeiten</a></li>
+				<li class="horizontal"><a href="#">Bestellung</a></li>
+				<li class="horizontal"><a href="https://www.fh-aachen.de">FH-Aachen</a></li>
+			</ul>
+		</nav>
+		<!-- Search -->
+		<form action="http://www.google.de/search" class="col input-group" id="headerSearchbar" style="margin: auto">
+			<div class="input-group-prepend">
+				<button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+			</div>
+			<input type="text" value="www.fh-aachen.de" hidden="hidden" name="as_sitesearch" />
+			<input id="searchBar" type="search" class="form-control" placeholder="Search" name="q" />
+		</form>
+	</header>
+	<div class="hr"></div>
+}
+
+@helper RenderFooter()
+{
+	<br />
+	<div class="hr"></div>
+	<footer class="row">
+		<!-- "Copyright" -->
+		<div class="col-2">
+			<p><i class="far fa-copyright"></i> <b>2018 DBWT</b></p>
+		</div>
+		<!-- Nav -->
+		<nav class="col navbar" id="footerNavbar">
+			<ul>
+				<li class="horizontal first"><a href="#">Login</a></li>
+				<li class="horizontal"><a href="#">Registrieren</a></li>
+				<li class="horizontal"><a href="Zutaten">Zutatenliste</a></li>
+				<li class="horizontal"><a href="Impressum.html">Impressum</a></li>
+			</ul>
+		</nav>
+		<div class="col-2">@DateTime.Now.ToString("HH:mm")</div>
+	</footer>
+}
