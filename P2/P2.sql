@@ -34,7 +34,7 @@ CREATE TABLE Benutzer (
   Nummer INT NOT NULL AUTO_INCREMENT,
   `E-Mail` VARCHAR(255) NOT NULL, -- Soll unique sein
   Nutzername VARCHAR(255) NOT NULL, -- ebenso unique
-  `Letzter Login` TIMESTAMP,
+  `Letzter Login` DATETIME,
   Geburtsdatum DATE,
   Age INT AS (2018 - YEAR(Geburtsdatum)), #TODO
   Anlegedatum DATE NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE Benutzer (
 
 CREATE TABLE Gäste(
   Grund VARCHAR(255) NOT NULL,
-  Ablaufdatum DATE NOT NULL,
+  Ablaufdatum DATE NOT NULL DEFAULT(ADDDATE(NOW(),7)),
   -- Relationen
   Nummer INT NOT NULL, -- [1,1]:[,1]
   -- Misc
@@ -185,7 +185,8 @@ CREATE TABLE Freundesliste(
   User INT NOT NULL,
   Freund INT NOT NULL,
   FOREIGN KEY (User) REFERENCES Benutzer(Nummer),
-  FOREIGN KEY (Freund) REFERENCES Benutzer(Nummer)
+  FOREIGN KEY (Freund) REFERENCES Benutzer(Nummer),
+  CONSTRAINT EinzigartigKombination UNIQUE(User,Freund)
 );
 
 CREATE TABLE BestellungenEnthältMahlzeiten(
