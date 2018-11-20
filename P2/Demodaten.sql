@@ -1,3 +1,8 @@
+DELETE FROM Deklarationen;
+DELETE FROM MahlzeitEnthältZutat;
+DELETE FROM Zutaten;
+DELETE FROM Fachbereiche;
+
 REPLACE INTO `Deklarationen` (`Zeichen`, `Beschriftung`) VALUES
 	('2', 'Konservierungsstoff'),
 	('3', 'Antioxidationsmittel'),

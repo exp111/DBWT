@@ -55,7 +55,8 @@ namespace P3.Controllers
 									    MAPreis = Convert.ToDouble(reader["MA-Preis"]),
 									    Studentpreis = Convert.ToDouble(reader["Studentpreis"])
 									},
-									Zutaten = new List<String>()
+									Zutaten = new List<string>(),
+									Bilder = new List<Bild>()
 							    };
 						    }
 					    }
@@ -63,6 +64,7 @@ namespace P3.Controllers
 
 				    if (mahlzeit != null)
 				    {
+						// Zutaten
 					    query = $"SELECT Zutaten.Name FROM (SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}) AS AZutaten INNER JOIN Zutaten ON AZutaten.Zutat = Zutaten.ID";
 					    using (MySqlCommand cmd = new MySqlCommand(query))
 					    {
@@ -75,7 +77,26 @@ namespace P3.Controllers
 							    }
 						    }
 					    }
-				    }
+
+						// Bilder
+					    query = $"SELECT Bilder.`Alt-Text`, Bilder.Titel, Bilder.Binärdaten FROM (SELECT Bild FROM MahlzeitHatBilder WHERE Mahlzeit = {id}) AS ABilder INNER JOIN Bilder ON ABilder.Bild = Bilder.ID";
+					    using (MySqlCommand cmd = new MySqlCommand(query))
+					    {
+						    cmd.Connection = con;
+						    using (MySqlDataReader reader = cmd.ExecuteReader())
+						    {
+							    while (reader.Read())
+							    {
+								    mahlzeit.Bilder.Add(new Bild()
+								    {
+									    Alttext = reader["Alt-Text"].ToString(),
+									    Titel = reader["Titel"].ToString(),
+									    Binärdaten = "data:image/jpg;base64," + Convert.ToBase64String((byte[])reader["Binärdaten"])
+									});
+							    }
+						    }
+					    }
+					}
 
 				    con.Close();
 			    }

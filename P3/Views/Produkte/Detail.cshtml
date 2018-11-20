@@ -46,9 +46,9 @@
 				</div>
 				<!-- Picture -->
 				<div class="col splash">
-					@if (Model == null)//bilder.Count > 0)
+					@if (Model.Bilder.Count > 0)
 					{
-						//<img height="150" src="@bilder[0].binärdaten" alt="@bilder[0].Alttext" />
+						<img height="150" src="@Model.Bilder[0].Binärdaten" alt="@Model.Bilder[0].Alttext" title="@Model.Bilder[0].Titel"/>
 					}
 					else
 					{

@@ -107,6 +107,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ProdukteController.cs" />
     <Compile Include="Controllers\StartController.cs" />
+    <Compile Include="Controllers\ZutatenController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -120,6 +121,7 @@
     <Content Include="Views\Start\Index.cshtml" />
     <Content Include="Views\Produkte\Index.cshtml" />
     <Content Include="Views\Produkte\Detail.cshtml" />
+    <Content Include="Views\Zutaten\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

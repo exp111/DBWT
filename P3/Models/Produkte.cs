@@ -21,12 +21,12 @@ namespace P3.Models
 		public double Studentpreis { get; set; }
 	}
 
-	class Bild
+	public class Bild
 	{
 		public int ID { get; set; }
 		public string Titel { get; set; }
 		public string Alttext { get; set; }
-		public string binärdaten { get; set; }
+		public string Binärdaten { get; set; }
 	}
 
 	public class Mahlzeit
@@ -38,12 +38,26 @@ namespace P3.Models
 		public bool Verfügbar { get; set; }
 		public List<Kategorie> Kategorien { get; set; }
 		public Preis Preis { get; set; }
-
-		public List<String> Zutaten { get; set; }
+		public List<string> Zutaten { get; set; }
+		public List<Bild> Bilder { get; set; }
 	}
 
 	public class Produkte
 	{
 		public List<Mahlzeit> mahlzeiten { get; set; }
+	}
+
+	public class Zutat
+	{
+		public int ID { get; set; }
+		public string Name { get; set; }
+		public bool Bio { get; set; }
+		public bool Vegetarisch { get; set; }
+		public bool Vegan { get; set; }
+		public bool Glutenfrei { get; set; }
+	}
+	public class Zutaten
+	{
+		public List<Zutat> list;
 	}
 }
