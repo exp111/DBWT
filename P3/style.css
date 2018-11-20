@@ -216,3 +216,10 @@ legend /* Same as above */
     {
         color: #c59b08;
     }
+
+.error 
+{
+    color: red;
+    font-family: Clan;
+    font-weight: bold;
+}

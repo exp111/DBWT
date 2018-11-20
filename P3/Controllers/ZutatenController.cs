@@ -49,6 +49,7 @@ namespace P3.Controllers
 		        catch (Exception e)
 		        {
 			        con.Close();
+					ModelState.AddModelError("Error", e.Message);
 			        return View(zutaten);
 		        }
 	        }

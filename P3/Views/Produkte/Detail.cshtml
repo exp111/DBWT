@@ -8,10 +8,11 @@
 	<head>
 		@if (Model == null) //Id wrong
 		{
-			<meta http-equiv="refresh" content="3; url=Start" />
+			<meta http-equiv="refresh" content="3; url=@Href("~/Start")" />
 		}
 	</head>
 	<body>
+		<span class="error">@Html.ValidationMessage("Error")</span>
 		@if (Model == null) //Id wrong
 		{
 			<h2 align="center">Mahlzeit mit der ID @Request.QueryString["id"] existiert nicht!</h2>
@@ -48,7 +49,7 @@
 				<div class="col splash">
 					@if (Model.Bilder.Count > 0)
 					{
-						<img height="150" src="@Model.Bilder[0].Binärdaten" alt="@Model.Bilder[0].Alttext" title="@Model.Bilder[0].Titel"/>
+						<img height="150" src="@Model.Bilder[0].Binärdaten" alt="@Model.Bilder[0].Alttext" title="@Model.Bilder[0].Titel" />
 					}
 					else
 					{
