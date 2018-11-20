@@ -8,8 +8,8 @@
 		<!-- Nav -->
 		<nav class="col navbar" id="headerNavbar">
 			<ul>
-				<li class="horizontal first"><a href="Start">Start</a></li>
-				<li class="horizontal"><a href="Produkte">Mahlzeiten</a></li>
+				<li class="horizontal first"><a href="@Href("~/Start")">Start</a></li>
+				<li class="horizontal"><a href="@Href("~/Produkte")">Mahlzeiten</a></li>
 				<li class="horizontal"><a href="#">Bestellung</a></li>
 				<li class="horizontal"><a href="https://www.fh-aachen.de">FH-Aachen</a></li>
 			</ul>
@@ -40,8 +40,8 @@
 			<ul>
 				<li class="horizontal first"><a href="#">Login</a></li>
 				<li class="horizontal"><a href="#">Registrieren</a></li>
-				<li class="horizontal"><a href="Zutaten">Zutatenliste</a></li>
-				<li class="horizontal"><a href="Impressum.html">Impressum</a></li>
+				<li class="horizontal"><a href="@Href("~/Zutaten")">Zutatenliste</a></li>
+				<li class="horizontal"><a href="@Href("~/Impressum.html")">Impressum</a></li>
 			</ul>
 		</nav>
 		<div class="col-2">@DateTime.Now.ToString("HH:mm")</div>
