@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using P3.Models;
 
@@ -16,7 +17,72 @@ namespace P3.Controllers
         // GET: Produkte
         public ActionResult Index()
         {
-            return View();
+	        string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+	        Produkte produkte = new Produkte()
+	        {
+		        rows = 2, columns = 4,
+		        kategorien = new List<Kategorie>(),
+		        mahlzeiten = new List<Mahlzeit>()
+
+	        };
+	        bool isPost = Request.HttpMethod == "POST";
+	        using (MySqlConnection con = new MySqlConnection(constr))
+	        {
+		        try
+		        {
+			        con.Open();
+			        // Get Kategorien
+			        string query = "SELECT ID, Bezeichnung, Parent FROM Kategorien";
+			        using (MySqlCommand cmd = new MySqlCommand(query))
+			        {
+				        cmd.Connection = con;
+				        using (MySqlDataReader reader = cmd.ExecuteReader())
+				        {
+					        while (reader.Read())
+					        {
+						        produkte.kategorien.Add(new Kategorie
+						        {
+							        ID = Convert.ToInt32(reader["ID"]),
+							        Bezeichnung = reader["Bezeichnung"].ToString(),
+							        Parent = (reader["Parent"] != DBNull.Value
+								        ? Convert.ToInt32(reader["Parent"])
+								        : -1)
+								});
+					        }
+				        }
+			        }
+
+			        // Get Mahlzeiten
+			        query = "SELECT ID, Name, verfügbar, inKategorie FROM Mahlzeiten";
+			        using (MySqlCommand cmd = new MySqlCommand(query))
+			        {
+				        cmd.Connection = con;
+				        using (MySqlDataReader reader = cmd.ExecuteReader())
+				        {
+					        while (reader.Read())
+					        {
+						        produkte.mahlzeiten.Add(new Mahlzeit
+						        {
+									ID = Convert.ToInt32(reader["ID"]),
+							        Name = reader["Name"].ToString(),
+							        Verfügbar = Convert.ToBoolean(reader["verfügbar"]),
+							        Kategorie = (reader["inKategorie"] != DBNull.Value
+								        ? Convert.ToInt32(reader["inKategorie"])
+								        : -1)
+						        });
+					        }
+				        }
+			        }
+		        }
+		        catch (Exception e)
+		        {
+			        con.Close();
+			        ModelState.AddModelError("Error", e.Message);
+			        return View(produkte);
+		        }
+	        }
+
+	        return View(produkte);
         }
 
 	    public ActionResult Detail(int id = -1)
@@ -28,7 +94,6 @@ namespace P3.Controllers
 
 		    string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
 		    Mahlzeit mahlzeit = null;
-		    Preis preis = new Preis() { ID = 1, Gastpreis = 5.95, MAPreis = 4.95, Studentpreis = 3.95 };
 		    List<Bild> bilder = new List<Bild>();
 		    using (MySqlConnection con = new MySqlConnection(constr))
 		    {

@@ -1,10 +1,76 @@
 ﻿<!DOCTYPE html>
 <html lang="de">
+@using P3.Models
+@model P3.Models.Produkte
 @{
 	Layout = "~/_Layout.cshtml";
 	Page.title = "Produkte";
 }
 <body>
 <span class="error">@Html.ValidationMessage("Error")</span>
+<!-- First Line (Title) -->
+<div class="row" style="margin: auto; text-align: center">
+	<div class="col">
+		<h2>Verfügbare Speisen (Bestseller)</h2>
+	</div>
+</div>
+<br/>
+<!-- Second Line -->
+<div class="row">
+	<!-- Filter Form-->
+	<div class="col-2">
+		<form method="post">
+			<fieldset>
+				<legend>Speisenliste filtern</legend>
+				<select class="form-control" name="filterCategory" id="filterCategory">
+					<optgroup label="Generell">
+						<option value="-1" selected="@(Request["filterCategory"] == "-1")">Alle</option>
+					</optgroup>
+					@foreach (Kategorie katGroup in Model.kategorien.Where(k => k.Parent == -1))
+					{
+						<optgroup label="@katGroup.Bezeichnung">
+						@foreach (Kategorie kategorie in Model.kategorien.Where(k => k.Parent == katGroup.ID))
+						{
+							<option value="@kategorie.ID" selected="@(Request["filterCategory"] == kategorie.ID.ToString())">@kategorie.Bezeichnung</option>
+						}
+						</optgroup>
+					}
+				</select><br/>
+				<input type="checkbox" name="filterAvailable" id="filterAvailable" value="available" checked="@Request["filterAvailable"]"> nur verfügbar<br>
+				<input type="checkbox" name="filterVegetarian" id="filterVegetarian" value="vegetarian" checked="@Request["filterVegetarian"]"> nur vegetarische<br>
+				<input type="checkbox" name="filterVegan" id="filterVegan" value="vegan" checked="@Request["filterVegan"]"> nur vegane<br>
+				<br/><br/>
+				<button class="btn btn-default btn-block raise">Speisen filtern</button>
+			</fieldset>
+		</form>
+	</div>
+	<!-- Food Elements -->
+	<div class="col">
+		<!-- Food Container -->
+		<div class="container" id="foodContainer">
+			@for (int i = 0; i < Model.rows && i * Model.columns < Model.mahlzeiten.Count; i++)
+			{
+				<div class="row">
+					@for (int j = 0; j < Model.columns && i * Model.columns + j < Model.mahlzeiten.Count; j++)
+					{
+						Mahlzeit cur = Model.mahlzeiten[i * Model.columns + j];
+						<div class="col-3 @(cur.Verfügbar ? "" : " disabled")">
+							<img src="~/black.png" width="100" height="100" alt="@cur.Name"/><br/>
+							@cur.Name<br/>
+							@if (cur.Verfügbar)
+							{
+								<a href="Detail?id=@cur.ID">Details</a>
+							}
+							else
+							{
+								<span>vergriffen</span>
+							}
+						</div>
+					}
+				</div>
+			}
+		</div>
+	</div>
+</div>
 </body>
 </html>

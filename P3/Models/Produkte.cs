@@ -36,7 +36,7 @@ namespace P3.Models
 		public string Beschreibung { get; set; }
 		public int Vorrat { get; set; }
 		public bool Verfügbar { get; set; }
-		public List<Kategorie> Kategorien { get; set; }
+		public int Kategorie { get; set; }
 		public Preis Preis { get; set; }
 		public List<string> Zutaten { get; set; }
 		public List<Bild> Bilder { get; set; }
@@ -45,6 +45,9 @@ namespace P3.Models
 	public class Produkte
 	{
 		public List<Mahlzeit> mahlzeiten { get; set; }
+		public List<Kategorie> kategorien { get; set; }
+		public int rows { get; set; }
+		public int columns { get; set; }
 	}
 
 	public class Zutat
