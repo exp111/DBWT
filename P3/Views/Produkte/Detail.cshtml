@@ -49,7 +49,7 @@
 				<div class="col splash">
 					@if (Model.Bilder.Count > 0)
 					{
-						<img height="150" src="@Model.Bilder[0].Binärdaten" alt="@Model.Bilder[0].Alttext" title="@Model.Bilder[0].Titel" />
+						<img height="150" src="@Model.Bilder.First().Binärdaten" alt="@Model.Bilder.First().Alttext" title="@Model.Bilder.First().Titel" />
 					}
 					else
 					{

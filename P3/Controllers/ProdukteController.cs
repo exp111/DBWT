@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using System.Web.WebPages;
 using MySql.Data.MySqlClient;
 using P3.Models;
 
@@ -25,7 +26,35 @@ namespace P3.Controllers
 		        mahlzeiten = new List<Mahlzeit>()
 
 	        };
+	        string filter = "";
 	        bool isPost = Request.HttpMethod == "POST";
+	        if (isPost)
+	        {
+		        bool checkCategory = !Request["filterCategory"].IsEmpty() && Request["filterCategory"] != "-1";
+		        string category = Request["filterCategory"];
+
+		        bool checkAvailable = Request["filterAvailable"] != null;
+		        bool available = checkAvailable && Request["filterAvailable"] == "available";
+
+		        bool checkVegetarian = Request["filterVegetarian"] != null;
+		        bool vegetarian = checkVegetarian && Request["filterVegetarian"] == "vegetarian";
+
+		        bool checkVegan = Request["filterVegan"] != null;
+		        bool vegan = checkVegan && Request["filterVegan"] == "vegan";
+		        if (checkCategory || checkAvailable || checkVegetarian || checkVegan)
+		        {
+			        filter = " WHERE";
+			        if (checkCategory)
+				        filter += $" inKategorie = {category} AND";
+			        if (checkAvailable)
+				        filter += $" verfügbar = {Convert.ToInt32(available)} AND";
+					if (checkVegetarian)
+						filter += $" vegetarisch = {Convert.ToInt32(vegetarian)} AND";
+			        if (checkVegan)
+				        filter += $" vegan = {Convert.ToInt32(vegan)} AND";
+					filter += " 1 = 1";
+		        }
+	        }
 	        using (MySqlConnection con = new MySqlConnection(constr))
 	        {
 		        try
@@ -53,7 +82,7 @@ namespace P3.Controllers
 			        }
 
 			        // Get Mahlzeiten
-			        query = "SELECT ID, Name, verfügbar, inKategorie FROM Mahlzeiten";
+			        query = $"SELECT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar, Bilder.Titel, Bilder.`Alt-Text`, Bilder.Binärdaten FROM (SELECT DISTINCT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar FROM (Mahlzeiten LEFT JOIN MahlzeitEnthältZutat ON Mahlzeit = ID) LEFT JOIN Zutaten ON zutaten.ID = Zutat{filter} LIMIT 8) AS Mahlzeiten LEFT JOIN MahlzeitHatBilder ON mahlzeithatbilder.Mahlzeit = Mahlzeiten.ID LEFT JOIN Bilder ON mahlzeithatbilder.Bild = Bilder.ID GROUP BY Mahlzeiten.ID";
 			        using (MySqlCommand cmd = new MySqlCommand(query))
 			        {
 				        cmd.Connection = con;
@@ -66,10 +95,16 @@ namespace P3.Controllers
 									ID = Convert.ToInt32(reader["ID"]),
 							        Name = reader["Name"].ToString(),
 							        Verfügbar = Convert.ToBoolean(reader["verfügbar"]),
-							        Kategorie = (reader["inKategorie"] != DBNull.Value
-								        ? Convert.ToInt32(reader["inKategorie"])
-								        : -1)
-						        });
+									Bilder = (reader["Alt-Text"] != DBNull.Value ? new List<Bild>()
+									{
+										new Bild()
+											{
+										Alttext = reader["Alt-Text"].ToString(),
+										Titel = reader["Titel"].ToString(),
+										Binärdaten = "data:image/jpg;base64," + Convert.ToBase64String((byte[])reader["Binärdaten"])
+												}
+									} : null)
+								});
 					        }
 				        }
 			        }
