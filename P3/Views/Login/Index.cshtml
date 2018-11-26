@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+@model P3.Models.Login
+@{
+	Layout = "~/_Layout.cshtml";
+	Page.title = "Login";
+}
+<body>
+<span class="error">@Html.ValidationMessage("Error")</span>
+@if (Model.LoggedIn)
+{
+	<p>Hallo <i>@Model.Username</i>, Sie sind angemeldet als <b>@Model.Type</b></p>
+	<form method="post">
+	<button class="btn btn-default raise">Abmelden</button>
+	</form>
+}
+else
+{
+	<form id="loginForm" method="post">
+	<label for="loginName"><b><span class="@(Model.Failed ? "loginError" : "")">Nutzername</span></b></label>
+		<input required name="loginName" id="loginName" type="text" class="form-control@(Model.Failed ? " is-invalid" : "")" placeholder="Benutzer" />
+		<br />
+		<label for="loginPassword"><b><span class="@(Model.Failed ? "loginError" : "")">Passwort</span></b></label>
+		<input required name="loginPassword" id="loginPassword" type="password" class="form-control@(Model.Failed ? " is-invalid" : "")" placeholder="Passwort" />
+		<br/>
+		<button class="btn btn-default btn-block raise">Anmelden</button>
+	</form>
+}
+</body>
+</html>

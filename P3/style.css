@@ -223,3 +223,8 @@ legend /* Same as above */
     font-family: Clan;
     font-weight: bold;
 }
+
+.loginError 
+{
+    background: lightcoral;
+}
