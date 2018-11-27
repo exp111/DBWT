@@ -136,7 +136,7 @@ namespace P3.Controllers
 			    {
 				    con.Open();
 				    // Get Mahlzeit Details
-				    string query = $"SELECT Mahlzeiten.Name, Mahlzeiten.Beschreibung, Preise.Gastpreis, Preise.`MA-Preis` , Preise.Studentpreis FROM Mahlzeiten INNER JOIN Preise ON Mahlzeiten.ID = Preise.ID WHERE Mahlzeiten.ID =  {id}";
+				    string query = $"SELECT Mahlzeiten.Name, Mahlzeiten.Beschreibung FROM Mahlzeiten WHERE Mahlzeiten.ID = {id}";
 				    using (MySqlCommand cmd = new MySqlCommand(query))
 				    {
 					    cmd.Connection = con;
@@ -149,12 +149,6 @@ namespace P3.Controllers
 								    ID = id,
 								    Name = reader["Name"].ToString(),
 								    Beschreibung = reader["Beschreibung"].ToString(),
-								    Preis = new Preis()
-								    {
-									    Gastpreis = Convert.ToDouble(reader["Gastpreis"]),
-									    MAPreis = Convert.ToDouble(reader["MA-Preis"]),
-									    Studentpreis = Convert.ToDouble(reader["Studentpreis"])
-									},
 									Zutaten = new List<string>(),
 									Bilder = new List<Bild>()
 							    };
@@ -164,8 +158,30 @@ namespace P3.Controllers
 
 				    if (mahlzeit != null)
 				    {
+						// User //TODO: maybe move into a procedure? (PreisFürNutzer(Name, id)
+					    int userId = 0;
+					    if (Session["user"] != null)
+					    {
+							//FIXME: unsafe af
+						    query = $"SELECT Nummer from Benutzer WHERE Nutzername = \"{Session["user"]}\"";
+						    using (MySqlCommand cmd = new MySqlCommand(query))
+						    {
+							    cmd.Connection = con;
+							    var result = cmd.ExecuteScalar();
+								userId = result != null ? Convert.ToInt32(result) : 0;
+						    }
+					    }
+
+					    // Preis
+						query = $"CALL PreisFürNutzer({userId}, {mahlzeit.ID})";
+					    using (MySqlCommand cmd = new MySqlCommand(query))
+					    {
+						    cmd.Connection = con;
+						    mahlzeit.Preis = Convert.ToDouble(cmd.ExecuteScalar().ToString());
+					    }
+
 						// Zutaten
-					    query = $"SELECT Zutaten.Name FROM (SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}) AS AZutaten INNER JOIN Zutaten ON AZutaten.Zutat = Zutaten.ID";
+						query = $"SELECT Zutaten.Name FROM (SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}) AS AZutaten INNER JOIN Zutaten ON AZutaten.Zutat = Zutaten.ID";
 					    using (MySqlCommand cmd = new MySqlCommand(query))
 					    {
 						    cmd.Connection = con;

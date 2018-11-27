@@ -3,7 +3,7 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace P3
+namespace P3.PasswordSecurity
 {
     class InvalidHashException : Exception
     {

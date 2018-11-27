@@ -7,9 +7,9 @@
 }
 <body>
 <span class="error">@Html.ValidationMessage("Error")</span>
-@if (Model.LoggedIn)
+@if (Model.LoggedIn && !Model.Failed)
 {
-	<p>Hallo <i>@Model.Username</i>, Sie sind angemeldet als <b>@Model.Type</b></p>
+	<p>Hallo <i>@Model.Username</i>, Sie sind angemeldet als <b>@Model.Role</b></p>
 	<form method="post" action="@Url.Action("Logout")">
 	<button class="btn btn-default raise">Abmelden</button>
 	</form>

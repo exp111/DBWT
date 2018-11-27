@@ -13,14 +13,6 @@ namespace P3.Models
 		public int Parent { get; set; }
 	}
 
-	public class Preis
-	{
-		public int ID { get; set; }
-		public double Gastpreis { get; set; }
-		public double MAPreis { get; set; }
-		public double Studentpreis { get; set; }
-	}
-
 	public class Bild
 	{
 		public int ID { get; set; }
@@ -37,7 +29,7 @@ namespace P3.Models
 		public int Vorrat { get; set; }
 		public bool Verfügbar { get; set; }
 		public int Kategorie { get; set; }
-		public Preis Preis { get; set; }
+		public double Preis { get; set; }
 		public List<string> Zutaten { get; set; }
 		public List<Bild> Bilder { get; set; }
 	}

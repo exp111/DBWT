@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
+using MySql.Data.MySqlClient;
 using P3.Models;
 
 namespace P3.Controllers
@@ -20,25 +22,68 @@ namespace P3.Controllers
 	        {
 		        login.LoggedIn = true;
 		        login.Username = Session["user"].ToString();
-		        login.Type = Session["role"].ToString();
+		        login.Role = Session["role"].ToString();
 
 				return View(login);
 	        }
 
 	        bool isPost = Request.HttpMethod == "POST";
 			if (isPost)
-	        {
-		        if (Request["loginName"] == "a" || Request["loginName"].IsEmpty() || Request["loginPassword"].IsEmpty())
+			{
+				string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+				using (MySqlConnection con = new MySqlConnection(constr))
 		        {
-			        ModelState.AddModelError("Error", "Das hat nicht geklappt! Bitte versuchen Sie es erneut.");
-			        login.Failed = true;
-			        return View(login);
+			        try
+			        {
+				        con.Open();
+						//FIXME: unsafe af
+				        string query = $"SELECT Nummer, Salt, Hash FROM Benutzer WHERE Nutzername = \"{Request["loginName"]}\"";
+				        using (MySqlCommand cmd = new MySqlCommand(query))
+				        {
+					        cmd.Connection = con;
+					        using (MySqlDataReader reader = cmd.ExecuteReader())
+					        {
+						        while (reader.Read())
+						        {
+							        login.LoggedIn = true;
+							        login.Username = Request["loginName"];
+							        login.ID = Convert.ToInt32(reader["Nummer"]);
+							        login.Salt = reader["Salt"].ToString();
+							        login.Hash = reader["Hash"].ToString();
+						        }
+					        }
+				        }
+
+				        if (login.LoggedIn)
+				        {
+					        query = $"CALL NutzerrollePrint({login.ID})";
+					        using (MySqlCommand cmd = new MySqlCommand(query))
+					        {
+						        cmd.Connection = con;
+						        login.Role = cmd.ExecuteScalar().ToString();
+					        }
+				        }
+				        con.Close();
+			        }
+			        catch (Exception e)
+			        {
+				        con.Close();
+				        ModelState.AddModelError("Error", e.Message);
+				        login.Failed = true;
+				        return View(login);
+			        }
 		        }
-		        login.LoggedIn = true;
-		        login.Username = Request["loginName"].ToString();
-		        login.Type = "Student";
+
+				if (!login.LoggedIn) //user not found
+				{
+					ModelState.AddModelError("Error", "Das hat nicht geklappt! Bitte versuchen Sie es erneut.");
+					login.Failed = true;
+					return View(login);
+				}
+
+				//P3.PasswordSecurity.PasswordStorage.CreateHash(Request["loginPassword"]);
 		        Session["user"] = login.Username;
-		        Session["role"] = login.Type;
+		        Session["role"] = login.Role;
 			}
             return View(login);
         }
