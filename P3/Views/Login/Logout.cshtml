@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+@{
+	Layout = "~/_Layout.cshtml";
+	Page.title = "Logout";
+}
+<head>
+	<meta http-equiv="refresh" content="3; url=@Href("~/Start")" />
+</head>
+<body>
+<span class="error">@Html.ValidationMessage("Error")</span>
+<span class="success">@Html.ValidationMessage("Success")</span>
+</body>
+</html>

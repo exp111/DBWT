@@ -217,9 +217,20 @@ legend /* Same as above */
         color: #c59b08;
     }
 
-.error 
+.error
 {
+    margin: auto;
+    display: table;
     color: red;
+    font-family: Clan;
+    font-weight: bold;
+}
+
+.success
+{
+    margin: auto;
+    display: table;
+    color: green;
     font-family: Clan;
     font-weight: bold;
 }

@@ -10,7 +10,7 @@
 @if (Model.LoggedIn)
 {
 	<p>Hallo <i>@Model.Username</i>, Sie sind angemeldet als <b>@Model.Type</b></p>
-	<form method="post">
+	<form method="post" action="@Url.Action("Logout")">
 	<button class="btn btn-default raise">Abmelden</button>
 	</form>
 }

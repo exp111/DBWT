@@ -14,6 +14,17 @@ namespace P3.Controllers
         public ActionResult Index()
         {
 			Login login = new Login(){LoggedIn = false};
+
+			// Check if we're already logged in
+	        if (!String.IsNullOrEmpty(Session["user"] as string) && !String.IsNullOrEmpty(Session["role"] as string))
+	        {
+		        login.LoggedIn = true;
+		        login.Username = Session["user"].ToString();
+		        login.Type = Session["role"].ToString();
+
+				return View(login);
+	        }
+
 	        bool isPost = Request.HttpMethod == "POST";
 			if (isPost)
 	        {
@@ -26,8 +37,24 @@ namespace P3.Controllers
 		        login.LoggedIn = true;
 		        login.Username = Request["loginName"].ToString();
 		        login.Type = "Student";
-	        }
+		        Session["user"] = login.Username;
+		        Session["role"] = login.Type;
+			}
             return View(login);
         }
+
+	    public ActionResult Logout()
+	    {
+		    if (!String.IsNullOrEmpty(Session["user"] as string) || !String.IsNullOrEmpty(Session["role"] as string))
+		    {
+			    Session["user"] = null;
+			    Session["role"] = null;
+				ModelState.AddModelError("Success", "Erfolgreich abgemeldet.");
+		    }
+			else
+				ModelState.AddModelError("Error", "Da ist etwas schief gegangen!");
+
+			return View();
+	    }
     }
 }
