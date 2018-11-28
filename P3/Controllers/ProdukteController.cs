@@ -62,9 +62,8 @@ namespace P3.Controllers
 			        con.Open();
 			        // Get Kategorien
 			        string query = "SELECT ID, Bezeichnung, Parent FROM Kategorien";
-			        using (MySqlCommand cmd = new MySqlCommand(query))
+			        using (MySqlCommand cmd = new MySqlCommand(query, con))
 			        {
-				        cmd.Connection = con;
 				        using (MySqlDataReader reader = cmd.ExecuteReader())
 				        {
 					        while (reader.Read())
@@ -83,9 +82,8 @@ namespace P3.Controllers
 
 			        // Get Mahlzeiten
 			        query = $"SELECT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar, Bilder.Titel, Bilder.`Alt-Text`, Bilder.Binärdaten FROM (SELECT DISTINCT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar FROM (Mahlzeiten LEFT JOIN MahlzeitEnthältZutat ON Mahlzeit = ID) LEFT JOIN Zutaten ON zutaten.ID = Zutat{filter} LIMIT 8) AS Mahlzeiten LEFT JOIN MahlzeitHatBilder ON mahlzeithatbilder.Mahlzeit = Mahlzeiten.ID LEFT JOIN Bilder ON mahlzeithatbilder.Bild = Bilder.ID GROUP BY Mahlzeiten.ID";
-			        using (MySqlCommand cmd = new MySqlCommand(query))
+			        using (MySqlCommand cmd = new MySqlCommand(query, con))
 			        {
-				        cmd.Connection = con;
 				        using (MySqlDataReader reader = cmd.ExecuteReader())
 				        {
 					        while (reader.Read())

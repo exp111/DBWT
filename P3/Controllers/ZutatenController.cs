@@ -25,9 +25,8 @@ namespace P3.Controllers
 		        {
 			        con.Open();
 			        string query = "SELECT * FROM Zutaten ORDER BY Bio DESC, Name ASC";
-			        using (MySqlCommand cmd = new MySqlCommand(query))
+			        using (MySqlCommand cmd = new MySqlCommand(query, con))
 			        {
-				        cmd.Connection = con;
 				        using (MySqlDataReader reader = cmd.ExecuteReader())
 				        {
 					        while (reader.Read())
