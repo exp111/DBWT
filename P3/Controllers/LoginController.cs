@@ -36,14 +36,14 @@ namespace P3.Controllers
 			        try
 			        {
 				        con.Open();
-						//FIXME: unsafe af
-				        string query = $"SELECT Nummer, Salt, Hash FROM Benutzer WHERE Nutzername = \"{Request["loginName"]}\"";
+						//FIXME: unsafe af; use parameters instead
+				        string query = $"SELECT Nummer, Salt, Hash FROM Benutzer WHERE Nutzername = \"{Request["loginName"]}\" LIMIT 1";
 				        using (MySqlCommand cmd = new MySqlCommand(query))
 				        {
 					        cmd.Connection = con;
 					        using (MySqlDataReader reader = cmd.ExecuteReader())
 					        {
-						        while (reader.Read())
+						        if (reader.Read())
 						        {
 							        login.LoggedIn = true;
 							        login.Username = Request["loginName"];
@@ -74,7 +74,7 @@ namespace P3.Controllers
 			        }
 		        }
 
-				if (!login.LoggedIn) //user not found
+				if (!login.LoggedIn) //user not found/pw wrong
 				{
 					ModelState.AddModelError("Error", "Das hat nicht geklappt! Bitte versuchen Sie es erneut.");
 					login.Failed = true;
