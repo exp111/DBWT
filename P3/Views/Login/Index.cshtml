@@ -11,13 +11,13 @@
 {
 	<p>Hallo <i>@Model.Username</i>, Sie sind angemeldet als <b>@Model.Role</b></p>
 	<form method="post" action="@Url.Action("Logout")">
-	<button class="btn btn-default raise">Abmelden</button>
+		<button class="btn btn-default raise">Abmelden</button>
 	</form>
 }
 else
 {
 	<form id="loginForm" method="post">
-	<label for="loginName"><b><span class="@(Model.Failed ? "loginError" : "")">Nutzername</span></b></label>
+		<label for="loginName"><b><span class="@(Model.Failed ? "loginError" : "")">Nutzername</span></b></label>
 		<input required name="loginName" id="loginName" type="text" class="form-control@(Model.Failed ? " is-invalid" : "")" placeholder="Benutzer" />
 		<br />
 		<label for="loginPassword"><b><span class="@(Model.Failed ? "loginError" : "")">Passwort</span></b></label>
@@ -25,6 +25,8 @@ else
 		<br/>
 		<button class="btn btn-default btn-block raise">Anmelden</button>
 	</form>
+
+	<p>Noch nicht registriert? Dann <a href="Register">hier</a> drücken!</p>
 }
 </body>
 </html>
