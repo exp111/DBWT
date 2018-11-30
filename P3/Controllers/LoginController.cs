@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -36,11 +37,10 @@ namespace P3.Controllers
 			        try
 			        {
 				        con.Open();
-						//FIXME: unsafe af; use parameters instead
-				        string query = $"SELECT Nummer, Salt, Hash FROM Benutzer WHERE Nutzername = \"{Request["loginName"]}\" LIMIT 1";
-				        using (MySqlCommand cmd = new MySqlCommand(query))
+				        string query = $"SELECT Nummer, Salt, Hash FROM Benutzer WHERE Nutzername = @name LIMIT 1";
+				        using (MySqlCommand cmd = new MySqlCommand(query, con))
 				        {
-					        cmd.Connection = con;
+					        cmd.Parameters.Add("name", Request["loginName"]);
 					        using (MySqlDataReader reader = cmd.ExecuteReader())
 					        {
 						        if (reader.Read())
@@ -56,11 +56,15 @@ namespace P3.Controllers
 
 				        if (login.LoggedIn)
 				        {
-					        query = $"CALL NutzerrollePrint({login.ID})";
-					        using (MySqlCommand cmd = new MySqlCommand(query))
+					        using (MySqlCommand cmd = new MySqlCommand("Nutzerrolle", con))
 					        {
-						        cmd.Connection = con;
-						        login.Role = cmd.ExecuteScalar().ToString();
+						        cmd.CommandType = CommandType.StoredProcedure;
+						        cmd.Parameters.Add("ID", login.ID);
+						        MySqlParameter role = new MySqlParameter("Role", MySqlDbType.VarChar, 25)
+							        { Direction = ParameterDirection.Output};
+						        cmd.Parameters.Add(role);
+						        cmd.ExecuteNonQuery();
+						        login.Role = role.Value != DBNull.Value ? role.Value.ToString() : "null";
 					        }
 				        }
 				        con.Close();
@@ -81,7 +85,7 @@ namespace P3.Controllers
 					return View(login);
 				}
 
-				//P3.PasswordSecurity.PasswordStorage.CreateHash(Request["loginPassword"]);
+				PasswordSecurity.PasswordStorage.CreateHash(Request["loginPassword"]);
 		        Session["user"] = login.Username;
 		        Session["role"] = login.Role;
 			}

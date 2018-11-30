@@ -160,7 +160,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\PasswordStorage.cs" />
+    <Content Include="Helpers\PasswordStorage.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProdukteController.cs" />

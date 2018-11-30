@@ -16,14 +16,7 @@ CREATE PROCEDURE Nutzerrolle(IN ID INT, OUT Role CHAR(25))
    END IF;
  END;
 
-CREATE PROCEDURE NutzerrollePrint(IN ID INT)
-  BEGIN
-    CALL Nutzerrolle(ID, @a);
-    SELECT @a AS Role;
-  END;
-
 GRANT EXECUTE ON PROCEDURE dbwt.Nutzerrolle TO 'webapp'@'localhost';
-GRANT EXECUTE ON PROCEDURE dbwt.NutzerrollePrint TO 'webapp'@'localhost';
 
 DROP PROCEDURE IF EXISTS PreisFürNutzer;
 CREATE PROCEDURE PreisFürNutzer(IN Nutzer INT, IN Mahlzeit INT)
@@ -38,5 +31,6 @@ CREATE PROCEDURE PreisFürNutzer(IN Nutzer INT, IN Mahlzeit INT)
   END;
 
 GRANT EXECUTE ON PROCEDURE dbwt.PreisFürNutzer TO 'webapp'@'localhost';
-CALL NutzerrollePrint(2);
+CALL Nutzerrolle(2, @role);
+SELECT @role;
 CALL PreisFürNutzer(2,1);
