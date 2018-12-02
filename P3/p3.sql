@@ -34,3 +34,5 @@ GRANT EXECUTE ON PROCEDURE dbwt.PreisFürNutzer TO 'webapp'@'localhost';
 CALL Nutzerrolle(2, @role);
 SELECT @role;
 CALL PreisFürNutzer(2,1);
+
+GRANT INSERT(`E-Mail`, Nutzername, `Letzter Login`, Geburtsdatum, Anlegedatum, Aktiv, Vorname, Nachname, Salt, Hash) ON dbwt.Benutzer TO 'webapp'@'localhost'
