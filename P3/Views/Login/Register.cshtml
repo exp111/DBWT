@@ -6,14 +6,63 @@
 <body>
 <span class="error">@Html.ValidationMessage("Error")</span>
 <span class="error">@Html.ValidationMessage("Hash")</span>
-	<form id="loginForm" method="post">
-		<label for="name"><b>Nutzername</b></label>
-		<input required name="name" id="name" type="text" class="form-control" placeholder="Benutzer" />
-		<br />
-		<label for="password"><b>Passwort</b></label>
+<form id="loginForm" method="post">
+	<label for="name"><b>Nutzername</b>*</label>
+	<input required name="name" id="name" type="text" class="form-control" placeholder="Benutzer" />
+	<br />
+	<label for="mail"><b>E-Mail</b>*</label>
+	<input required name="mail" id="mail" type="text" class="form-control" placeholder="E-Mail" />
+	<br />
+	<label for="password"><b>Passwort</b>*</label>
+	<div style="display: flex">
 		<input required name="password" id="password" type="password" class="form-control" placeholder="Passwort" />
-		<br/>
-		<button class="btn btn-default btn-block raise">Registrieren</button>
-	</form>
+		<input required name="passwordRepeat" id="passwordRepeat" type="password" class="form-control" placeholder="Wiederholen" />
+	</div>
+	<br />
+	<label for="birthdate"><b>Geburtsdatum</b></label>
+	<input name="birthdate" id="birthdate" type="date" class="form-control" />
+	<br />
+	<label for="firstName"><b>Vorname</b>*</label>
+	<input required name="firstName" id="firstName" type="text" class="form-control" placeholder="Vorname" />
+	<br />
+	<label for="lastName"><b>Nachname</b>*</label>
+	<input required name="lastName" id="lastName" type="text" class="form-control" placeholder="Nachname" />
+	<br />
+	<div style="display: flex">
+		<input required name="role" type="radio" class="form-control" value="Gast" />Gast
+		<input required name="role" type="radio" class="form-control" value="Mitarbeiter" />Mitarbeiter
+		<input required name="role" type="radio" class="form-control" value="Student" />Student
+	</div>
+	<br />
+	<div id="gast" hidden="true">
+		<label for="reason"><b>Grund</b>*</label>
+		<input required name="reason" id="reason" type="text" class="form-control" placeholder="Grund" />
+		<br />
+		<label for="expireDate"><b>Ablaufdatum</b></label>
+		<input name="expireDate" id="expireDate" type="date" class="form-control" />
+		<br />
+	</div>
+	<button class="btn btn-default btn-block raise">Registrieren</button>
+
+	<div class="btn-group" role="tablist">
+			<a class="btn btn-default active" id="desc-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Beschreibung</a>
+		
+			<a class="btn btn-default" id="ingredients-tab" data-toggle="tab" href="#ingredients" role="tab" aria-controls="ingredients" aria-selected="false">Zutaten</a>
+		
+			<a class="btn btn-default" id="ratings-tab" data-toggle="tab" href="#ratings" role="tab" aria-controls="ratings" aria-selected="false">Bewertungen</a>
+		
+	</div>
+	<div class="tab-content" id="tabsContent" style="padding: 5px">
+		<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="desc-tab">
+			<p>first</p>
+		</div>
+		<div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
+			<p>u</p>
+		</div>
+	<div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
+		<p>no </p>
+	</div>
+	</div>
+</form>
 </body>
 </html>
