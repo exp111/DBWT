@@ -1,4 +1,6 @@
-﻿@helper RenderHeader()
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@helper RenderHeader(HtmlHelper<dynamic> html)
 {
 	<header class="row" id="header">
 		<!-- Title -->
@@ -8,8 +10,8 @@
 		<!-- Nav -->
 		<nav class="col navbar" id="headerNavbar">
 			<ul>
-				<li class="horizontal first"><a href="@Href("~/Start")">Start</a></li>
-				<li class="horizontal"><a href="@Href("~/Produkte")">Mahlzeiten</a></li>
+				<li class="horizontal first">@html.ActionLink("Start", "Index", "Start")</li>
+				<li class="horizontal">@html.ActionLink("Mahlzeiten", "Index", "Produkte")</li>
 				<li class="horizontal"><a href="#">Bestellung</a></li>
 				<li class="horizontal"><a href="https://www.fh-aachen.de">FH-Aachen</a></li>
 			</ul>
@@ -26,7 +28,7 @@
 	<div class="hr"></div>
 }
 
-@helper RenderFooter()
+@helper RenderFooter(HtmlHelper<dynamic> html)
 {
 	<br />
 	<div class="hr"></div>
@@ -38,9 +40,9 @@
 		<!-- Nav -->
 		<nav class="col navbar" id="footerNavbar">
 			<ul>
-				<li class="horizontal first"><a href="@Href("~/Login")">Login</a></li>
-				<li class="horizontal"><a href="#">Registrieren</a></li>
-				<li class="horizontal"><a href="@Href("~/Zutaten")">Zutatenliste</a></li>
+				<li class="horizontal first">@html.ActionLink("Login", "Index", "Login")</li>
+				<li class="horizontal">@html.ActionLink("Registrieren", "Register", "Login")</li>
+				<li class="horizontal">@html.ActionLink("Zutatenliste", "Index", "Zutaten")</li>
 				<li class="horizontal"><a href="@Href("~/Impressum.html")">Impressum</a></li>
 			</ul>
 		</nav>

@@ -4,7 +4,7 @@
 	Page.title = "Logout";
 }
 <head>
-	<meta http-equiv="refresh" content="3; url=@Href("~/Start")" />
+	<meta http-equiv="refresh" content="3; url=@Url.Action("Index", "Start")" />
 </head>
 <body>
 <span class="error">@Html.ValidationMessage("Error")</span>

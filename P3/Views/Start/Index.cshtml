@@ -2,6 +2,7 @@
 <html lang="de">
 @{
 	Page.title = "Start";
+	bool loggedIn = !String.IsNullOrEmpty(Session["user"] as string) && !String.IsNullOrEmpty(Session["role"] as string);
 }
 <body>
 	<span class="error">@Html.ValidationMessage("Error")</span>
@@ -16,7 +17,7 @@
 	<div class="row">
 		<!-- Left Text Field -->
 		<div class="col-2">
-			<p>Der Dienst e-Mensa ist noch beta. Sie können bereits <a href="~/Produkte">Mahlzeiten</a> durchstöbern, aber noch nicht bestellen.</p>
+			<p>Der Dienst e-Mensa ist noch beta. Sie können bereits @Html.ActionLink("Mahlzeiten", "Index", "Produkte") durchstöbern, aber noch nicht bestellen.</p>
 		</div>
 		<!-- Big Text Field in the Middle -->
 		<div class="col">
@@ -25,13 +26,16 @@
 		</div>
 		<!-- Right Buttons (Register, Login) -->
 		<div class="col-2" style="margin: auto">
-			<form action="~/Login/Register">
-				<button class="btn btn-default btn-block raise"><i class="far fa-hand-point-right"></i> Registrieren</button>
-			</form>
-			<br />
-			<form action="~/Login">
-				<button class="btn btn-default btn-block raise"><i class="fas fa-sign-in-alt"></i> Anmelden</button>
-			</form>
+			@if (!loggedIn)
+			{
+				<form action="@Url.Action("Register", "Login")" >
+					<button class="btn btn-default btn-block raise"><i class="far fa-hand-point-right"></i> Registrieren</button>
+				</form>
+				<br/>
+				<form action="@Url.Action("Index", "Login")">
+					<button class="btn btn-default btn-block raise"><i class="fas fa-sign-in-alt"></i> Anmelden</button>
+				</form>
+			}
 		</div>
 	</div>
 	<br />
@@ -39,8 +43,11 @@
 	<div class="row">
 		<!-- Left Text Field -->
 		<div class="col-2">
-			<p>Registieren Sie sich <a href="~/Login/Register">hier</a>, um über die Veröffentlichung des Dienstes per Mail informiert zu werden.</p>
-		</div>
+			@if (!loggedIn)
+			{
+				<p>Registieren Sie sich @Html.ActionLink("hier", "Register", "Login"), um über die Veröffentlichung des Dienstes per Mail informiert zu werden.</p>
+			}
+			                                                                                                                              </div>
 		<!-- Middle to Right big Splash Image -->
 		<div class="col splash">
 			<img height="100" src="black.png" alt="Black" />

@@ -3,11 +3,12 @@
 @model P3.Models.Mahlzeit
 @{
 	Page.title = "Details";
+	bool loggedIn = !String.IsNullOrEmpty(Session["user"] as string) && !String.IsNullOrEmpty(Session["role"] as string);
 }
 	<head>
 		@if (Model == null) //Id wrong
 		{
-			<meta http-equiv="refresh" content="3; url=@Href("~/Start")" />
+			<meta http-equiv="refresh" content="3; url=@Url.Action("Index", "Start")" />
 		}
 	</head>
 	<body>
@@ -35,9 +36,9 @@
 			<div class="row">
 				<!-- Login Form-->
 				<div class="col-2">
-					@if (String.IsNullOrEmpty(Session["user"] as string) || String.IsNullOrEmpty(Session["role"] as string))
+					@if (!loggedIn)
 					{
-						<form action="~/Login" method="post" id="loginForm">
+						<form action="@Url.Action("Index", "Login")" method="post" id="loginForm">
 							<fieldset>
 								<legend>Login</legend>
 								<input name="loginName" id="loginName" type="text" class="form-control" placeholder="Benutzer"/>
@@ -73,9 +74,12 @@
 			<div class="row">
 				<!-- Text -->
 				<div class="col-2">
+					@if (!loggedIn)
+					{ 
 					<p>
 						Melden Sie sich jetzt an, um die wirklich viel günstigeren Preise für Mitarbeiter oder Studenten zu sehen.
 					</p>
+					}
 				</div>
 				<!-- Tabs -->
 				<div class="col">
