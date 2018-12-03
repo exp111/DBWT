@@ -37,13 +37,13 @@ CALL PreisFürNutzer(2,1);
 
 GRANT INSERT(`E-Mail`, Nutzername, `Letzter Login`, Geburtsdatum, Anlegedatum, Aktiv, Vorname, Nachname, Salt, Hash) ON dbwt.Benutzer TO 'webapp'@'localhost'
 
-SELECT       ID, Name, verfügbar, inKategorie, Vegetarisch, Vegan, `Alt-Text`, Titel, Binärdaten
-FROM (SELECT Mahlzeiten.ID,
+DROP VIEW IF EXISTS Produkte;
+CREATE VIEW IF NOT EXISTS Produkte AS SELECT Mahlzeiten.ID,
              Mahlzeiten.Name,
              Mahlzeiten.verfügbar,
              Mahlzeiten.inKategorie,
-             (COUNT(mahlzeitenthältzutat.Zutat) = SUM(Zutaten.Vegetarisch)) AS Vegetarisch,
-             (COUNT(mahlzeitenthältzutat.Zutat) = SUM(Zutaten.Vegan))       AS Vegan,
+             (COUNT(mahlzeitenthältzutat.Zutat) = SUM(Zutaten.Vegetarisch)) AS vegetarisch,
+             (COUNT(mahlzeitenthältzutat.Zutat) = SUM(Zutaten.Vegan))       AS vegan,
              Bilder.`Alt-Text`,
              Bilder.Titel,
              Bilder.Binärdaten
@@ -52,4 +52,4 @@ FROM (SELECT Mahlzeiten.ID,
              LEFT JOIN Zutaten ON zutaten.ID = Zutat
              LEFT JOIN MahlzeitHatBilder ON mahlzeithatbilder.Mahlzeit = Mahlzeiten.ID
              LEFT JOIN Bilder ON mahlzeithatbilder.Bild = Bilder.ID
-      GROUP BY Mahlzeiten.ID) AS Mahlzeiten;
+      GROUP BY Mahlzeiten.ID;

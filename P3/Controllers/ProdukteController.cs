@@ -21,7 +21,7 @@ namespace P3.Controllers
 	        string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
 	        Produkte produkte = new Produkte()
 	        {
-		        rows = 2, columns = 4,
+		        rows = 5, columns = 4,
 		        kategorien = new List<Kategorie>(),
 		        mahlzeiten = new List<Mahlzeit>()
 
@@ -33,25 +33,22 @@ namespace P3.Controllers
 		        bool checkCategory = !Request["filterCategory"].IsEmpty() && Request["filterCategory"] != "-1";
 		        string category = Request["filterCategory"];
 
-		        bool checkAvailable = Request["filterAvailable"] != null;
-		        bool available = checkAvailable && Request["filterAvailable"] == "available";
+		        bool available = Request["filterAvailable"] == "available";
 
-		        bool checkVegetarian = Request["filterVegetarian"] != null;
-		        bool vegetarian = checkVegetarian && Request["filterVegetarian"] == "vegetarian";
+		        bool vegetarian = Request["filterVegetarian"] == "vegetarian";
 
-		        bool checkVegan = Request["filterVegan"] != null;
-		        bool vegan = checkVegan && Request["filterVegan"] == "vegan";
-		        if (checkCategory || checkAvailable || checkVegetarian || checkVegan)
+		        bool vegan = Request["filterVegan"] == "vegan";
+		        if (checkCategory || available || vegetarian || vegan)
 		        {
 			        filter = " WHERE";
 			        if (checkCategory)
 				        filter += $" inKategorie = {category} AND";
-			        if (checkAvailable)
-				        filter += $" verfügbar = {Convert.ToInt32(available)} AND";
-					if (checkVegetarian)
-						filter += $" vegetarisch = {Convert.ToInt32(vegetarian)} AND";
-			        if (checkVegan)
-				        filter += $" vegan = {Convert.ToInt32(vegan)} AND";
+			        if (available)
+				        filter += " verfügbar = 1 AND";
+					if (vegetarian)
+						filter += $" vegetarisch = 1 AND";
+			        if (vegan)
+				        filter += $" vegan = 1 AND";
 					filter += " 1 = 1";
 		        }
 	        }
@@ -81,7 +78,7 @@ namespace P3.Controllers
 			        }
 
 			        // Get Mahlzeiten
-			        query = $"SELECT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar, Bilder.Titel, Bilder.`Alt-Text`, Bilder.Binärdaten FROM (SELECT DISTINCT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar FROM (Mahlzeiten LEFT JOIN MahlzeitEnthältZutat ON Mahlzeit = ID) LEFT JOIN Zutaten ON zutaten.ID = Zutat{filter} LIMIT 8) AS Mahlzeiten LEFT JOIN MahlzeitHatBilder ON mahlzeithatbilder.Mahlzeit = Mahlzeiten.ID LEFT JOIN Bilder ON mahlzeithatbilder.Bild = Bilder.ID GROUP BY Mahlzeiten.ID";
+			        query = $"SELECT ID, Name, verfügbar, Titel, `Alt-Text`, Binärdaten FROM Produkte{filter}";
 			        using (MySqlCommand cmd = new MySqlCommand(query, con))
 			        {
 				        using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -172,9 +169,8 @@ namespace P3.Controllers
 
 					    // Preis
 						query = $"CALL PreisFürNutzer({userId}, {mahlzeit.ID})";
-					    using (MySqlCommand cmd = new MySqlCommand(query))
+					    using (MySqlCommand cmd = new MySqlCommand(query, con))
 					    {
-						    cmd.Connection = con;
 						    mahlzeit.Preis = Convert.ToDouble(cmd.ExecuteScalar().ToString());
 					    }
 
