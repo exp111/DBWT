@@ -36,3 +36,19 @@ SELECT @role;
 CALL PreisFürNutzer(2,1);
 
 GRANT INSERT(`E-Mail`, Nutzername, `Letzter Login`, Geburtsdatum, Anlegedatum, Aktiv, Vorname, Nachname, Salt, Hash) ON dbwt.Benutzer TO 'webapp'@'localhost'
+
+SELECT * FROM
+        (SELECT DISTINCT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar, Zutaten.Vegetarisch FROM (Mahlzeiten LEFT JOIN MahlzeitEnthältZutat ON Mahlzeit = ID)
+        LEFT JOIN Zutaten ON zutaten.ID = Zutat LIMIT 8) AS Mahlzeiten
+        LEFT JOIN MahlzeitHatBilder ON mahlzeithatbilder.Mahlzeit = Mahlzeiten.ID
+        LEFT JOIN Bilder ON mahlzeithatbilder.Bild = Bilder.ID GROUP BY Mahlzeiten.ID;
+
+SELECT Mahlzeiten.ID, Mahlzeiten.Name, Mahlzeiten.verfügbar,
+       COUNT(mahlzeitenthältzutat.Zutat) - COUNT(Zutaten.Vegetarisch) AS Vegetarisch,
+       COUNT(mahlzeitenthältzutat.Zutat) - COUNT(Zutaten.Vegan) AS Vegan,
+        Bilder.`Alt-Text`
+FROM mahlzeiten
+        LEFT JOIN MahlzeitEnthältZutat ON Mahlzeit = Mahlzeiten.ID
+        LEFT JOIN Zutaten ON zutaten.ID = Zutat
+LEFT JOIN MahlzeitHatBilder ON mahlzeithatbilder.Mahlzeit = Mahlzeiten.ID
+        LEFT JOIN Bilder ON mahlzeithatbilder.Bild = Bilder.ID GROUP BY Mahlzeiten.ID;
