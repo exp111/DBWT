@@ -155,13 +155,12 @@ namespace P3.Controllers
 				    {
 						// User //TODO: maybe move into a procedure? (PreisFürNutzer(Name, id)
 					    int userId = 0;
-					    if (Session["user"] != null)
+					    if (!String.IsNullOrEmpty(Session["user"] as string))
 					    {
-							//FIXME: unsafe af
-						    query = $"SELECT Nummer from Benutzer WHERE Nutzername = \"{Session["user"]}\"";
-						    using (MySqlCommand cmd = new MySqlCommand(query))
+						    query = $"SELECT Nummer from Benutzer WHERE Nutzername = @name";
+						    using (MySqlCommand cmd = new MySqlCommand(query, con))
 						    {
-							    cmd.Connection = con;
+							    cmd.Parameters.AddWithValue("name", Session["user"]);
 							    var result = cmd.ExecuteScalar();
 								userId = result != null ? Convert.ToInt32(result) : 0;
 						    }
@@ -176,9 +175,8 @@ namespace P3.Controllers
 
 						// Zutaten
 						query = $"SELECT Zutaten.Name FROM (SELECT Zutat FROM MahlzeitEnthältZutat WHERE Mahlzeit = {id}) AS AZutaten INNER JOIN Zutaten ON AZutaten.Zutat = Zutaten.ID";
-					    using (MySqlCommand cmd = new MySqlCommand(query))
+					    using (MySqlCommand cmd = new MySqlCommand(query, con))
 					    {
-						    cmd.Connection = con;
 						    using (MySqlDataReader reader = cmd.ExecuteReader())
 						    {
 							    while (reader.Read())
@@ -190,9 +188,8 @@ namespace P3.Controllers
 
 						// Bilder
 					    query = $"SELECT Bilder.`Alt-Text`, Bilder.Titel, Bilder.Binärdaten FROM (SELECT Bild FROM MahlzeitHatBilder WHERE Mahlzeit = {id}) AS ABilder INNER JOIN Bilder ON ABilder.Bild = Bilder.ID";
-					    using (MySqlCommand cmd = new MySqlCommand(query))
+					    using (MySqlCommand cmd = new MySqlCommand(query, con))
 					    {
-						    cmd.Connection = con;
 						    using (MySqlDataReader reader = cmd.ExecuteReader())
 						    {
 							    while (reader.Read())

@@ -41,7 +41,7 @@ namespace P3.Controllers
 						string query = "SELECT Nummer, Salt, Hash, Aktiv FROM Benutzer WHERE Nutzername = @name LIMIT 1";
 						using (MySqlCommand cmd = new MySqlCommand(query, con))
 						{
-							cmd.Parameters.Add("name", Request["loginName"]);
+							cmd.Parameters.AddWithValue("name", Request["loginName"]);
 							using (MySqlDataReader reader = cmd.ExecuteReader())
 							{
 								if (reader.Read())
@@ -70,7 +70,7 @@ namespace P3.Controllers
 							using (MySqlCommand cmd = new MySqlCommand("Nutzerrolle", con))
 							{
 								cmd.CommandType = CommandType.StoredProcedure;
-								cmd.Parameters.Add("ID", login.ID);
+								cmd.Parameters.AddWithValue("ID", login.ID);
 								MySqlParameter role = new MySqlParameter("Role", MySqlDbType.VarChar, 25)
 									{Direction = ParameterDirection.Output};
 								cmd.Parameters.Add(role);
@@ -148,13 +148,13 @@ namespace P3.Controllers
 							cmd.CommandText =
 								"INSERT INTO Benutzer(`E-Mail`, Nutzername, Geburtsdatum, Anlegedatum, Aktiv, Vorname, Nachname, Salt, Hash) " +
 								"VALUES(@mail, @name, @date, CURDATE(), 0, @firstName, @lastName, @salt, @hash)";
-							cmd.Parameters.Add("mail", Request["mail"]);
-							cmd.Parameters.Add("name", Request["name"]);
-							cmd.Parameters.Add("date", Request["birthdate"] != null ? Request["birthdate"] : "null");
-							cmd.Parameters.Add("firstName", Request["firstName"]);
-							cmd.Parameters.Add("lastName", Request["lastName"]);
-							cmd.Parameters.Add("salt", salt);
-							cmd.Parameters.Add("hash", hash);
+							cmd.Parameters.AddWithValue("mail", Request["mail"]);
+							cmd.Parameters.AddWithValue("name", Request["name"]);
+							cmd.Parameters.AddWithValue("date", Request["birthdate"] != null ? Request["birthdate"] : "null");
+							cmd.Parameters.AddWithValue("firstName", Request["firstName"]);
+							cmd.Parameters.AddWithValue("lastName", Request["lastName"]);
+							cmd.Parameters.AddWithValue("salt", salt);
+							cmd.Parameters.AddWithValue("hash", hash);
 							int rows = cmd.ExecuteNonQuery(); // DML
 							//cmd.CommandText =
 							//	"UPDATE Benutzer SET Nutzername='Rand(om)' WHERE Nummer>11";
