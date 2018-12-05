@@ -138,11 +138,12 @@ namespace P3.Controllers
 				string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
 				using (MySqlConnection con = new MySqlConnection(constr))
 				{
+					MySqlTransaction tr = null;
 					try
 					{
 						con.Open();
 						// innerhalb der Connection con eine Transaktion beginnen
-						MySqlTransaction tr = con.BeginTransaction();
+						tr = con.BeginTransaction();
 						using (MySqlCommand cmd = new MySqlCommand() {Connection = con, Transaction = tr})
 						{
 							cmd.CommandText =
@@ -150,25 +151,56 @@ namespace P3.Controllers
 								"VALUES(@mail, @name, @date, CURDATE(), 0, @firstName, @lastName, @salt, @hash)";
 							cmd.Parameters.AddWithValue("mail", Request["mail"]);
 							cmd.Parameters.AddWithValue("name", Request["name"]);
-							cmd.Parameters.AddWithValue("date", Request["birthdate"] != null ? Request["birthdate"] : "null");
+							cmd.Parameters.AddWithValue("date", !String.IsNullOrEmpty(Request["birthdate"]) ? Request["birthdate"] : "null");
 							cmd.Parameters.AddWithValue("firstName", Request["firstName"]);
 							cmd.Parameters.AddWithValue("lastName", Request["lastName"]);
 							cmd.Parameters.AddWithValue("salt", salt);
 							cmd.Parameters.AddWithValue("hash", hash);
-							int rows = cmd.ExecuteNonQuery(); // DML
-							//cmd.CommandText =
-							//	"UPDATE Benutzer SET Nutzername='Rand(om)' WHERE Nummer>11";
-							//rows = cmd.ExecuteNonQuery();
-							// alle fehlerfrei? -> commit!
+							var rows = cmd.ExecuteNonQuery();
+
+							cmd.Parameters.Clear();
+							cmd.Parameters.AddWithValue("id", cmd.LastInsertedId);
+							if (Request["role"] == "Mitarbeiter" || Request["role"] == "Student")
+							{
+								cmd.CommandText = "INSERT INTO `FH Angehörige`(Nummer) VALUES(@id)";
+								cmd.ExecuteNonQuery();
+							}
+
+							switch (Request["role"])
+							{
+								case "Gast":
+									if (!String.IsNullOrEmpty(Request["expireDate"]))
+									{
+										cmd.CommandText =
+											"INSERT INTO Gäste(Nummer, Ablaufdatum, Grund) VALUES(@id, @date, @reason)";
+										cmd.Parameters.AddWithValue("date", Request["expireDate"]);
+									}
+									else
+										cmd.CommandText = "INSERT INTO Gäste(Nummer, Grund) VALUES(@id, @reason)";
+									cmd.Parameters.AddWithValue("reason", !String.IsNullOrEmpty(Request["reason"]) ? Request["reason"] : "null");
+									break;
+								case "Mitarbeiter":
+									cmd.CommandText = "INSERT INTO Mitarbeiter(Nummer, Telefon, Büro) VALUES(@id, @phone, @office)";
+									cmd.Parameters.AddWithValue("phone", !String.IsNullOrEmpty(Request["phone"]) ? Request["phone"] : "null");
+									cmd.Parameters.AddWithValue("office", !String.IsNullOrEmpty(Request["office"]) ? Request["office"] : "null");
+									break;
+								case "Student":
+									cmd.CommandText = "INSERT INTO Studenten(Nummer, Matrikelnummer, Studiengang) VALUES(@id, @matriculationNumber, @degree)";
+									cmd.Parameters.AddWithValue("matriculationNumber", Request["matriculationNumber"]);
+									cmd.Parameters.AddWithValue("degree", Request["degree"]);
+									break;
+
+							}
+							rows = cmd.ExecuteNonQuery();
+
 							tr.Commit();
-							// falls es Probleme gab
-							tr.Rollback();
 						}
 
 						con.Close();
 					}
 					catch (Exception e)
 					{
+						tr?.Rollback();
 						con.Close();
 						ModelState.AddModelError("Error", e.Message);
 						return View();

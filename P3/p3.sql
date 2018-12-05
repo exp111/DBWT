@@ -35,7 +35,12 @@ CALL Nutzerrolle(2, @role);
 SELECT @role;
 CALL PreisFürNutzer(2,1);
 
-GRANT INSERT(`E-Mail`, Nutzername, `Letzter Login`, Geburtsdatum, Anlegedatum, Aktiv, Vorname, Nachname, Salt, Hash) ON dbwt.Benutzer TO 'webapp'@'localhost'
+GRANT INSERT(`E-Mail`, Nutzername, `Letzter Login`, Geburtsdatum, Anlegedatum, Aktiv, Vorname, Nachname, Salt, Hash) ON dbwt.Benutzer TO 'webapp'@'localhost';
+GRANT INSERT(Nummer) ON dbwt.`FH Angehörige` TO 'webapp'@'localhost';
+GRANT INSERT(Nummer, Telefon, Büro) ON dbwt.Mitarbeiter TO 'webapp'@'localhost';
+GRANT INSERT(Nummer, Ablaufdatum, Grund) ON dbwt.Gäste TO 'webapp'@'localhost';
+GRANT INSERT(Nummer, Matrikelnummer, Studiengang) ON dbwt.Studenten TO 'webapp'@'localhost';
+
 
 DROP VIEW IF EXISTS Produkte;
 CREATE VIEW IF NOT EXISTS Produkte AS SELECT Mahlzeiten.ID,
