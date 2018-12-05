@@ -119,7 +119,7 @@ namespace P3.Controllers
 		{
 			//Already logged in -> no need to register
 			if (!String.IsNullOrEmpty(Session["user"] as string) || !String.IsNullOrEmpty(Session["role"] as string))
-				return View();
+				return RedirectToAction("Index");
 
 			bool isPost = Request.HttpMethod == "POST";
 			if (isPost)
@@ -134,6 +134,8 @@ namespace P3.Controllers
 				var results = result.Split(':');
 				string hash = results.Last();
 				string salt = results[results.Length - 2];
+
+				bool loggedIn = false;
 
 				string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
 				using (MySqlConnection con = new MySqlConnection(constr))
@@ -197,6 +199,8 @@ namespace P3.Controllers
 						}
 
 						con.Close();
+
+						loggedIn = true;
 					}
 					catch (Exception e)
 					{
@@ -205,9 +209,10 @@ namespace P3.Controllers
 						ModelState.AddModelError("Error", e.Message);
 						return View();
 					}
-
-					//TODO: go to /Index or /Logout (depends if the client is logged in afterwards) after registering successfully
 				}
+
+				if (loggedIn)
+					return RedirectToAction("Index");
 			}
 
 			return View();
