@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8" />
+	<title>@Page.Title</title>
+	@RenderSection("head", required: false)
+	<link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+	<link rel="stylesheet" href="~/style.css" />
+	
+	<script src="~/Scripts/jquery-3.0.0.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		@LayoutHelper.RenderHeader(Html)
+		@RenderBody()
+		@LayoutHelper.RenderFooter(Html)
+	</div>
+</body>
+</html>

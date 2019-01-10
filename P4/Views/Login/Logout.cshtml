@@ -1,0 +1,13 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+@{
+	Page.title = "Logout";
+}
+<head>
+	<meta http-equiv="refresh" content="3; url=@Url.Action("Index", "Start")" />
+</head>
+<body>
+<span class="error">@Html.ValidationMessage("Error")</span>
+<span class="success">@Html.ValidationMessage("Success")</span>
+</body>
+</html>

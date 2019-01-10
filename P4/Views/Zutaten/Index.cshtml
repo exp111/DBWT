@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+@model P4.Models.Zutaten
+@{
+	Page.title = "Zutaten";
+}
+
+@helper BioIcon(bool bio)
+{
+	if (bio)
+	{
+		<img src="~/bio.svg" height="25" alt="Bio Logo"/>
+	}
+}
+
+@helper FlagIcon(bool flag)
+{
+	<i class="far @(flag ? "fa-check-circle" : "fa-circle")"></i>
+}
+
+<body>
+<span class="error">@Html.ValidationMessage("Error")</span>
+<div class="table-responsive">
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>Zutat</th>
+			<th>Vegetarisch?</th>
+			<th>Vegan?</th>
+			<th>Glutenfrei?</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var zutat in Model.list)
+		{
+			<tr>
+				<td><a href="@($"http://www.google.de/search?q={zutat.Name}")">@zutat.Name</a>@BioIcon(zutat.Bio)</td>
+				<td> @FlagIcon(zutat.Vegetarisch) </td>
+				<td> @FlagIcon(zutat.Vegan) </td>
+				<td> @FlagIcon(zutat.Glutenfrei) </td>
+			</tr>
+		}
+		</tbody>
+	</table>
+</div>
+</body>
+</html>
