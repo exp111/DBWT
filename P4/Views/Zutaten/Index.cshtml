@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="de">
-@model P4.Models.Zutaten
+@model List<P4.Models.Zutat>
 @{
 	Page.title = "Zutaten";
 }
@@ -31,7 +31,7 @@
 		</tr>
 		</thead>
 		<tbody>
-		@foreach (var zutat in Model.list)
+		@foreach (var zutat in Model)
 		{
 			<tr>
 				<td><a href="@($"http://www.google.de/search?q={zutat.Name}")">@zutat.Name</a>@BioIcon(zutat.Bio)</td>

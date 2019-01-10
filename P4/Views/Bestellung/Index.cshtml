@@ -1,106 +1,42 @@
-﻿@model IEnumerable<DbModels.Benutzer>
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<P4.Models.WarenkorbItem>
 
 @{
-    Layout = null;
+	Page.title = "Bestellungen";
+	double totalCost = 0;
 }
 
 <!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
+<html lang="de">
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
     <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nummer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EMail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nutzername)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LetzterLogin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Geburtsdatum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Age)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Anlegedatum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Aktiv)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vorname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nachname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Salt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hash)
-            </th>
-            <th></th>
-        </tr>
+	    <tr>
+		    <th>ID</th>
+		    <th>Mahlzeit</th>
+		    <th>Einzelpreis</th>
+		    <th>Anzahl</th>
+		    <th>Gesamtpreis</th>
+	    </tr>
     
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
+	    var cost = item.Preis * item.Count;
+	    totalCost += cost;
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nummer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EMail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nutzername)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LetzterLogin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Geburtsdatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Anlegedatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Aktiv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vorname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nachname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Salt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hash)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+	        <td>@item.ID</td>
+	        <td>@item.Name</td>
+	        <td>@item.Preis €</td>
+	        <td>@item.Count</td>
+	        <td>@cost €</td>
         </tr>
     }
+	    <tr>
+		    <td><a>Alle löschen</a></td>
+		    <td><a>Änderung übernehmen</a></td>
+		    <td colspan="2">Diese Bestellung kostet</td>
+		    <td><span class="btn btn-sm btn-outline-info">@(totalCost) €</span></td>
+	    </tr>
     
     </table>
 </body>

@@ -152,8 +152,11 @@ namespace P4.Models
 		public bool Vegan { get; set; }
 		public bool Glutenfrei { get; set; }
 	}
-	public class Zutaten
+	public class WarenkorbItem
 	{
-		public List<Zutat> list;
+		public int ID { get; set; }
+		public string Name { get; set; }
+		public double Preis { get; set; }
+		public int Count { get; set; }
 	}
 }

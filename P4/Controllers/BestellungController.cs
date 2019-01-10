@@ -6,8 +6,10 @@ using System.Web;
 using System.Web.Mvc;
 using DbModels;
 using LinqToDB.Common;
+using LinqToDB.Data;
 using LinqToDB.Tools;
 using Newtonsoft.Json;
+using P4.Models;
 
 namespace P4.Controllers
 {
@@ -16,12 +18,39 @@ namespace P4.Controllers
         // GET: Bestellung
         public ActionResult Index()
         {
-	        List<Benutzer> list;
-			var constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-			using (DbwtDB db = new DbwtDB(constr))
-			{
-				list = db.Benutzer.Where(b => b.Aktiv).ToList();
+	        List<WarenkorbItem> list = new List<WarenkorbItem>();
+
+	        if (Request.Cookies["bestellung"] != null)
+	        {
+		        var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(Request.Cookies["bestellung"].Value);
+		        var constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+		        DataConnection.DefaultSettings = new MySettings() { ConnectionString = constr };
+		        using (DbwtDB db = new DbwtDB())
+		        {
+			        int userId = 0;
+			        if (!String.IsNullOrEmpty(Session["user"] as string))
+			        {
+						var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()?.Nummer;
+					    userId = result != null ? Convert.ToInt32(result) : 0;
+			        }
+
+					list = db.Mahlzeiten.Where(m => oldDict.ContainsKey(m.ID))
+				        .Select(m => new WarenkorbItem
+					        { ID = m.ID,
+						        Name = m.Name,
+						        Count = oldDict[m.ID],
+						})
+				        .ToList();
+
+			        foreach (var mahlzeit in list)
+			        {
+				        mahlzeit.Preis =
+					        db.QueryProc<double>("PreisFürNutzer", new {Nutzer = userId, Mahlzeit = mahlzeit.ID})
+						        .FirstOrDefault();
+			        }
+				}
 			}
+	        
             return View(list);
         }
 
@@ -96,4 +125,23 @@ namespace P4.Controllers
 			return PartialView(new {count = count});
 	    }
     }
+}
+
+namespace LinqToDB.Data
+{
+	static class DataConnectionExtension
+	{
+		public static List<T> QueryProc<T>(this DataConnection db, string proc, object values)
+		{
+			List<DataParameter> parameters = new List<DataParameter>();
+			foreach (var prop in values.GetType().GetProperties())
+			{
+				var name = prop.Name;
+				var value = prop.GetValue(values);
+				parameters.Add(new DataParameter(name, value));
+			}
+			var result = db.QueryProc<T>(proc, parameters.ToArray());
+			return result.ToList();
+		}
+	}
 }

@@ -15,10 +15,7 @@ namespace P4.Controllers
         public ActionResult Index()
         {
 	        string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-	        Zutaten zutaten = new Zutaten()
-	        {
-				list = new List<Zutat>()
-	        };
+	        List<Zutat> zutaten = new List<Zutat>();
 	        using (MySqlConnection con = new MySqlConnection(constr))
 	        {
 		        try
@@ -31,7 +28,7 @@ namespace P4.Controllers
 				        {
 					        while (reader.Read())
 					        {
-						        zutaten.list.Add(new Zutat()
+						        zutaten.Add(new Zutat()
 						        {
 							        ID = Convert.ToInt32(reader["ID"]),
 							        Name = reader["Name"].ToString(),

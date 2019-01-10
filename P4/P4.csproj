@@ -201,6 +201,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CopyMe.MySql.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DbModels\Settings.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Produkte.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -229,9 +230,9 @@
     <Content Include="Views\Login\Logout.cshtml" />
     <Content Include="Views\Login\Register.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Bestellung\Index.cshtml" />
     <Content Include="Views\Bestellung\_Link.cshtml" />
     <Content Include="Views\Bestellung\Set.cshtml" />
+    <Content Include="Views\Bestellung\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

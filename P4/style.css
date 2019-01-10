@@ -239,3 +239,16 @@ legend /* Same as above */
 {
     background: lightcoral;
 }
+
+.btn-outline-info
+{
+    color: rgb(0, 177, 172);
+    border-color: rgb(0, 177, 172);
+}
+
+    .btn-outline-info:hover
+    {
+        color: white;
+        border-color: rgb(0, 177, 172);
+        background-color: rgb(0, 177, 172);
+    }
