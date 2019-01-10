@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DbModels;
+using LinqToDB.Common;
+using LinqToDB.Tools;
 using Newtonsoft.Json;
 
 namespace P4.Controllers
@@ -23,36 +25,68 @@ namespace P4.Controllers
             return View(list);
         }
 
-	    public HttpCookie CreateCookie()
+	    public static HttpCookie CreateCookie(string name, Dictionary<int, int> dict)
 	    {
-		    if (Request.Cookies["bestellungen"] == null)
-		    {
-			    var dict = new Dictionary<int, int> {{1, 1}, {2, 2}};
-			    HttpCookie cookie = new HttpCookie("bestellung");
-			    cookie.Value = JsonConvert.SerializeObject(dict);
-				cookie.Expires = DateTime.Now.AddDays(1);
-			    return cookie;
-		    }
+			HttpCookie cookie = new HttpCookie(name);
+			cookie.Value = JsonConvert.SerializeObject(dict);
+			cookie.Expires = DateTime.Now.AddDays(1);
+			return cookie;
+	    }
 
-		    return null;
+	    public static HttpCookie AddToCookie(HttpCookie cookie, int key, int value)
+	    {
+		    if (cookie != null)
+		    {
+			    try
+			    {
+				    var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie.Value);
+					if (oldDict.ContainsKey(key))
+					{
+						oldDict[key] += value;
+					}
+				    else
+				    {
+					    oldDict.Add(key, value);
+				    }
+
+				    return CreateCookie(cookie.Name, oldDict);
+			    }
+			    catch (Exception)
+			    {
+					// If we can't deserialize the cookie (faulty => create a new one)
+			    }
+			}
+
+			return CreateCookie("bestellung", new Dictionary<int, int> { { key, value } });
 	    }
 
 	    public ActionResult Set()
 	    {
-			Response.SetCookie(CreateCookie());
+			Response.SetCookie(CreateCookie("bestellung", new Dictionary<int, int>{{1, 1}}));
 		    return View();
 	    }
+
+	    public ActionResult Update()
+	    {
+		    Response.SetCookie(AddToCookie(Request.Cookies["bestellung"], 1, 1));
+		    return View("Set");
+		}
 
 	    public PartialViewResult _Link()
 	    {
 		    int count = 0;
-		    if (Request.Cookies["bestellung"] != null)
+
+			var cookie = Response.Cookies.AllKeys.Contains("bestellung")
+			    ? Response.Cookies["bestellung"]
+			    : Request.Cookies["bestellung"];
+
+			if (cookie != null)
 		    {
 			    try
 			    {
 				    var dict = JsonConvert.DeserializeObject<Dictionary<int, int>>(
-					    Request.Cookies["bestellung"].Value);
-				    count = dict.Sum(e => e.Key);
+					    cookie.Value);
+				    count = dict.Sum(e => e.Value);
 			    }
 			    catch (Exception)
 			    {
