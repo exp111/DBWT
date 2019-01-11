@@ -127,16 +127,19 @@ namespace P4.Controllers
 			    try
 			    {
 				    var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie.Value);
-					if (oldDict.ContainsKey(key))
-					{
-						oldDict[key] += value;
-					}
-				    else
+				    if (oldDict != null)
 				    {
-					    oldDict.Add(key, value);
-				    }
+					    if (oldDict.ContainsKey(key))
+					    {
+						    oldDict[key] += value;
+					    }
+					    else
+					    {
+						    oldDict.Add(key, value);
+					    }
 
-				    return CreateCookie(cookie.Name, oldDict);
+					    return CreateCookie(cookie.Name, oldDict);
+				    }
 			    }
 			    catch (Exception)
 			    {
@@ -146,18 +149,6 @@ namespace P4.Controllers
 
 			return CreateCookie("bestellung", new Dictionary<int, int> { { key, value } });
 	    }
-
-	    public ActionResult Set()
-	    {
-			Response.SetCookie(CreateCookie("bestellung", new Dictionary<int, int>{{1, 1}}));
-		    return View();
-	    }
-
-	    public ActionResult Update()
-	    {
-		    Response.SetCookie(AddToCookie(Request.Cookies["bestellung"], 1, 1));
-		    return View("Set");
-		}
 
 	    public PartialViewResult _Link()
 	    {
