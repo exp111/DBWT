@@ -20,39 +20,97 @@ namespace P4.Controllers
         {
 	        List<WarenkorbItem> list = new List<WarenkorbItem>();
 
-	        if (Request.Cookies["bestellung"] != null)
-	        {
-		        var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(Request.Cookies["bestellung"].Value);
-		        var constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-		        DataConnection.DefaultSettings = new MySettings() { ConnectionString = constr };
-		        using (DbwtDB db = new DbwtDB())
-		        {
-			        int userId = 0;
-			        if (!String.IsNullOrEmpty(Session["user"] as string))
-			        {
-						var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()?.Nummer;
-					    userId = result != null ? Convert.ToInt32(result) : 0;
-			        }
+	        var cookie = Response.Cookies.AllKeys.Contains("bestellung")
+		        ? Response.Cookies["bestellung"]
+		        : Request.Cookies["bestellung"];
 
-					list = db.Mahlzeiten.Where(m => oldDict.ContainsKey(m.ID))
-				        .Select(m => new WarenkorbItem
-					        { ID = m.ID,
+			if (cookie != null)
+	        {
+		        var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie.Value);
+		        if (oldDict != null)
+		        {
+			        var constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+			        DataConnection.DefaultSettings = new MySettings() {ConnectionString = constr};
+			        using (DbwtDB db = new DbwtDB())
+			        {
+				        int userId = 0;
+				        if (!String.IsNullOrEmpty(Session["user"] as string))
+				        {
+					        var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()
+						        ?.Nummer;
+					        userId = result != null ? Convert.ToInt32(result) : 0;
+				        }
+
+				        list = db.Mahlzeiten.Where(m => oldDict.ContainsKey(m.ID))
+					        .Select(m => new WarenkorbItem
+					        {
+						        ID = m.ID,
 						        Name = m.Name,
 						        Count = oldDict[m.ID],
-						})
-				        .ToList();
+					        })
+					        .ToList();
 
-			        foreach (var mahlzeit in list)
-			        {
-				        mahlzeit.Preis =
-					        db.QueryProc<double>("PreisFürNutzer", new {Nutzer = userId, Mahlzeit = mahlzeit.ID})
-						        .FirstOrDefault();
+				        list.ForEach(m =>
+					        m.Preis = db.QueryProc<double>("PreisFürNutzer",
+							        new {Nutzer = userId, Mahlzeit = m.ID})
+						        .FirstOrDefault());
 			        }
-				}
-			}
+		        }
+	        }
 	        
             return View(list);
         }
+
+	    [HttpPost]
+	    [ActionName("Index")]
+	    public ActionResult IndexPost()
+	    {
+		    if (!Request.Form.IsNullOrEmpty())
+		    {
+			    switch (Request.Form.AllKeys.Last())
+			    {
+				    case "delete":
+					    Response.Cookies["bestellung"].Value = "";
+					    break;
+				    case "update":
+				    {
+					    var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(Request.Cookies["bestellung"].Value);
+					    if (oldDict != null)
+					    {
+						    foreach (string input in Request.Form)
+						    {
+								if (!Int32.TryParse(input, out int intput))
+									continue;
+
+							    if (oldDict.ContainsKey(intput))
+							    {
+								    if (!Int32.TryParse(Request.Form[input], out int intputValue))
+									    continue;
+										if (intputValue > 0)
+								    {
+									    oldDict[intput] = intputValue;
+								    }
+								    else
+								    {
+									    oldDict.Remove(intput);
+								    }
+							    }
+						    }
+
+						    Response.SetCookie(CreateCookie("bestellung", oldDict));
+					    }
+
+					    break;
+				    }
+					case "order":
+						Response.Cookies["bestellung"].Value = "";
+						ModelState.AddModelError("Affirmation", "Erfolgreich bestellt!");
+						break;
+			    }
+		    }
+
+		    return Index();
+	    }
 
 	    public static HttpCookie CreateCookie(string name, Dictionary<int, int> dict)
 	    {

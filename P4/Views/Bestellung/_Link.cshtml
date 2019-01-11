@@ -1,1 +1,1 @@
-﻿<a href="Bestellung">Bestellungen (@(ViewData.Eval("count")))</a>
+﻿@Html.ActionLink($"Bestellungen ({ViewData.Eval("count")})", "Index", "Bestellung")

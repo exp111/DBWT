@@ -10,34 +10,64 @@
 
 <html lang="de">
 <body>
-    <table class="table">
-	    <tr>
-		    <th>ID</th>
-		    <th>Mahlzeit</th>
-		    <th>Einzelpreis</th>
-		    <th>Anzahl</th>
-		    <th>Gesamtpreis</th>
-	    </tr>
-    
-    @foreach (var item in Model)
-    {
-	    var cost = item.Preis * item.Count;
-	    totalCost += cost;
-        <tr>
-	        <td>@item.ID</td>
-	        <td>@item.Name</td>
-	        <td>@item.Preis €</td>
-	        <td>@item.Count</td>
-	        <td>@cost €</td>
-        </tr>
-    }
-	    <tr>
-		    <td><a>Alle löschen</a></td>
-		    <td><a>Änderung übernehmen</a></td>
-		    <td colspan="2">Diese Bestellung kostet</td>
-		    <td><span class="btn btn-sm btn-outline-info">@(totalCost) €</span></td>
-	    </tr>
-    
-    </table>
+<p style="color: grey; text-align: center">@Html.ValidationMessage("Affirmation")</p>
+<table class="table">
+	<tr>
+		<th>ID</th>
+		<th>Mahlzeit</th>
+		<th>Einzelpreis</th>
+		<th>Anzahl</th>
+		<th>Gesamtpreis</th>
+	</tr>
+	@if (Model.Count() > 0)
+	{
+		<form method="post">
+			@foreach (var item in Model)
+			{
+				var cost = item.Preis * item.Count;
+				totalCost += cost;
+				<tr>
+					<td>@item.ID</td>
+					<td>@item.Name</td>
+					<td>@item.Preis €</td>
+					<td><input type="number" min="0" step="1" value="@item.Count" name="@item.ID"/></td>
+					<td>@cost €</td>
+				</tr>
+			}
+			<tr>
+				<td><button name="delete" class="btn btn-block raise" type="submit">Alle löschen</button></td>
+				<td><button name="update" class="btn btn-block raise" type="submit">Änderung übernehmen</button></td>
+				<td class="align-middle" colspan="2">Diese Bestellung kostet</td>
+				<td><span class="btn btn-sm btn-outline-info">@(totalCost) €</span></td>
+			</tr>
+
+			<tr>
+				<td colspan="4" class="align-middle">
+					Abholzeit:
+					<select>
+						@{
+							DateTime min = DateTime.Now.AddMinutes(30);
+							// Check if minute == 0 cuz 0 % 15 = 15 and das not gud
+							DateTime cur = min.AddMinutes(min.Minute != 0 ? 15 - min.Minute % 15 : 0);
+							for (int i = 0; i < 12; i++)
+							{
+								var curStr = cur.ToString("HH:mm");
+								<option value="@curStr">@curStr</option>
+								cur = cur.AddMinutes(15);
+							}
+						}
+					</select>
+				</td>
+				<td>
+					<button name="order" class="btn btn-block raise" type="submit">Kostenpflichtig bestellen</button>
+				</td>
+			</tr>
+		</form>
+	}
+	else
+	{
+		<tr><td colspan="5" class="text-center">Keine Bestellungen</td></tr>
+	}
+</table>
 </body>
 </html>
