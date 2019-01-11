@@ -29,16 +29,16 @@
 				<tr>
 					<td>@item.ID</td>
 					<td>@item.Name</td>
-					<td>@item.Preis €</td>
+					<td>@item.Preis.ToString("C2")</td>
 					<td><input type="number" min="0" step="1" value="@item.Count" name="@item.ID"/></td>
-					<td>@cost €</td>
+					<td>@cost.ToString("C2")</td>
 				</tr>
 			}
 			<tr>
 				<td><button name="delete" class="btn btn-block raise" type="submit">Alle löschen</button></td>
 				<td><button name="update" class="btn btn-block raise" type="submit">Änderung übernehmen</button></td>
 				<td class="align-middle" colspan="2">Diese Bestellung kostet</td>
-				<td><span class="btn btn-sm btn-outline-info">@(totalCost) €</span></td>
+				<td><span class="btn btn-sm btn-outline-info">@(totalCost.ToString("C2"))</span></td>
 			</tr>
 
 			<tr>
