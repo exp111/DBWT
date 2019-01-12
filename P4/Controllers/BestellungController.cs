@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DbModels;
+using LinqToDB;
 using LinqToDB.Common;
 using LinqToDB.Data;
 using LinqToDB.Tools;
@@ -29,33 +30,40 @@ namespace P4.Controllers
 		        var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie.Value);
 		        if (oldDict != null)
 		        {
-			        var constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-			        DataConnection.DefaultSettings = new MySettings() {ConnectionString = constr};
-			        using (DbwtDB db = new DbwtDB())
-			        {
-				        int userId = 0;
-				        if (!String.IsNullOrEmpty(Session["user"] as string))
+			        try
 				        {
-					        var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()
-						        ?.Nummer;
-					        userId = result != null ? Convert.ToInt32(result) : 0;
-				        }
-
-				        list = db.Mahlzeiten.Where(m => oldDict.ContainsKey(m.ID))
-					        .Select(m => new WarenkorbItem
+				        var constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+				        DataConnection.DefaultSettings = new MySettings() {ConnectionString = constr};
+				        using (DbwtDB db = new DbwtDB())
+				        {
+					        int userId = 0;
+					        if (!String.IsNullOrEmpty(Session["user"] as string))
 					        {
-						        ID = m.ID,
-						        Name = m.Name,
-						        Count = oldDict[m.ID],
-					        })
-					        .ToList();
+						        var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()
+							        ?.Nummer;
+						        userId = result != null ? Convert.ToInt32(result) : 0;
+					        }
 
-				        list.ForEach(m =>
-					        m.Preis = db.QueryProc<double>("PreisFürNutzer",
-							        new {Nutzer = userId, Mahlzeit = m.ID})
-						        .FirstOrDefault());
+					        list = db.Mahlzeiten.Where(m => oldDict.ContainsKey(m.ID))
+						        .Select(m => new WarenkorbItem
+						        {
+							        ID = m.ID,
+							        Name = m.Name,
+							        Count = oldDict[m.ID],
+						        })
+						        .ToList();
+
+					        list.ForEach(m =>
+						        m.Preis = db.QueryProc<double>("PreisFürNutzer",
+								        new {Nutzer = userId, Mahlzeit = m.ID})
+							        .FirstOrDefault());
+				        }
 			        }
-		        }
+			        catch (Exception e)
+			        {
+				        ModelState.AddModelError("Error", e.Message);
+			        }
+				}
 	        }
 	        
             return View(list);
@@ -103,6 +111,32 @@ namespace P4.Controllers
 					    break;
 				    }
 					case "order":
+						if (String.IsNullOrEmpty(Session["user"] as string))
+							return RedirectToAction("Index", "Login");
+
+						using (DbwtDB db = new DbwtDB())
+						{
+							var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()
+								?.Nummer;
+							int userId = result != null ? Convert.ToInt32(result) : 0; //TODO: we shouldn't let any faulty user order
+
+							int key = db.InsertWithInt32Identity(new DbModels.Bestellungen
+							{
+								Bestellzeitpunkt = DateTime.Now,
+								Abholzeitpunkt = DateTime.Parse(Request.Form["time"]),
+								Endpreis = Double.Parse(Request.Form["totalCost"]),
+								GetätigtVon = userId
+							});
+
+							List<Bestellungenenthältmahlzeiten> list = Request.Form.AllKeys
+								.Where(k => Int32.TryParse(k, out int n)).Select(k => new Bestellungenenthältmahlzeiten
+								{
+									Bestellung = key,
+									Mahlzeit = Int32.Parse(k),
+									Anzahl = Int32.Parse(Request.Form[k])
+								}).ToList();
+							db.BulkCopy(list);
+						}
 						Response.Cookies["bestellung"].Value = "";
 						ModelState.AddModelError("Affirmation", "Erfolgreich bestellt!");
 						break;

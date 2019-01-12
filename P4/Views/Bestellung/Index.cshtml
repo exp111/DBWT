@@ -10,6 +10,7 @@
 
 <html lang="de">
 <body>
+<p class="error">@Html.ValidationMessage("Error")</p>
 <p style="color: grey; text-align: center">@Html.ValidationMessage("Affirmation")</p>
 <table class="table">
 	<tr>
@@ -38,13 +39,16 @@
 				<td><button name="delete" class="btn btn-block raise" type="submit">Alle löschen</button></td>
 				<td><button name="update" class="btn btn-block raise" type="submit">Änderung übernehmen</button></td>
 				<td class="align-middle" colspan="2">Diese Bestellung kostet</td>
-				<td><span class="btn btn-sm btn-outline-info">@(totalCost.ToString("C2"))</span></td>
+				<td>
+					<input type="hidden" name="totalCost" value="@totalCost">
+					<span class="btn btn-sm btn-outline-info">@(totalCost.ToString("C2"))</span>
+				</td>
 			</tr>
 
 			<tr>
 				<td colspan="4" class="align-middle">
 					Abholzeit:
-					<select>
+					<select name="time">
 						@{
 							DateTime min = DateTime.Now.AddMinutes(30);
 							// Check if minute == 0 cuz 0 % 15 = 15 and das not gud
