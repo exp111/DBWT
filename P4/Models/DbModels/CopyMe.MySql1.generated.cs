@@ -13,6 +13,7 @@ using LinqToDB;
 using LinqToDB.Common;
 using LinqToDB.Data;
 using LinqToDB.Mapping;
+using Newtonsoft.Json;
 
 namespace DbModels
 {
@@ -68,7 +69,7 @@ namespace DbModels
 	[Table("benutzer")]
 	public partial class Benutzer
 	{
-		[Column(),                PrimaryKey,  Identity] public int       Nummer       { get; set; } // int(11)
+		[Column(),                PrimaryKey,  Identity] [JsonIgnore] public int       Nummer       { get; set; } // int(11)
 		[Column("E-Mail"),        NotNull              ] public string    EMail        { get; set; } // varchar(255)
 		[Column(),                NotNull              ] public string    Nutzername   { get; set; } // varchar(255)
 		[Column("Letzter Login"), NotNull              ] public DateTime  LetzterLogin { get; set; } // timestamp
@@ -119,11 +120,11 @@ namespace DbModels
 	[Table("bestellungen")]
 	public partial class Bestellungen
 	{
-		[PrimaryKey, Identity   ] public int      Nummer           { get; set; } // int(11)
+		[PrimaryKey, Identity   ] [JsonIgnore] public int      Nummer           { get; set; } // int(11)
 		[Column,     NotNull    ] public DateTime Bestellzeitpunkt { get; set; } // timestamp
 		[Column,     NotNull    ] public DateTime Abholzeitpunkt   { get; set; } // timestamp
 		[Column,        Nullable] public double?  Endpreis         { get; set; } // double
-		[Column,     NotNull    ] public int      GetätigtVon      { get; set; } // int(11)
+		[Column,     NotNull, JsonIgnore] public int      GetätigtVon      { get; set; } // int(11)
 
 		#region Associations
 

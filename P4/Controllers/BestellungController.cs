@@ -50,7 +50,7 @@ namespace P4.Controllers
 									{
 										ID = m.ID,
 										Name = m.Name,
-										Count = oldDict[m.ID],
+										Count = oldDict[m.ID]
 									})
 									.ToList();
 
