@@ -233,6 +233,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Bestellung\_Link.cshtml" />
     <Content Include="Views\Bestellung\Index.cshtml" />
+    <Content Include="Views\Dispatch\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -243,7 +244,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Dispatch\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DbModels;
 using LinqToDB.Common;
 using Newtonsoft.Json;
 
@@ -16,19 +17,27 @@ namespace P4.Controllers
 		{
 			var xAuthorize = Request.Headers.GetValues("X-Authorize");
 			if (xAuthorize.IsNullOrEmpty() || !xAuthorize.First().Equals("ohShitHereComesDatBoi"))
-				return Json(new HttpUnauthorizedResult(), JsonRequestBehavior.AllowGet);
+				return Json(new HttpUnauthorizedResult("Sie sind nicht authorisiert"), JsonRequestBehavior.AllowGet);
 
-			if (Request.Cookies["bestellung"] != null && Request.Cookies["bestellung"].Value.IsNullOrEmpty())
+			using (DbwtDB db = new DbwtDB())
 			{
-				var dict = JsonConvert.DeserializeObject<Dictionary<int, int>>(Request.Cookies["bestellung"].Value);
-				if (dict != null)
+				try
 				{
-					return Json(dict, JsonRequestBehavior.AllowGet);
+					List<Bestellungen> list = db.Bestellungen.Where(b => DateTime.Now < b.Abholzeitpunkt //after now
+																	&& DateTime.Now.AddHours(1) > b.Abholzeitpunkt) //in max 1h
+																	.ToList();
+					return Json(list, JsonRequestBehavior.AllowGet);
 				}
-
-				return Json("Faulty Cookie Found", JsonRequestBehavior.AllowGet);
+				catch (Exception e)
+				{
+					return Json(e.Message, JsonRequestBehavior.AllowGet);
+				}
 			}
-			return Json("No Cookie Found", JsonRequestBehavior.AllowGet);
+		}
+
+		public ActionResult Index()
+		{
+			return View();
 		}
 	}
 }

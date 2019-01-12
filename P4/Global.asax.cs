@@ -13,6 +13,10 @@ namespace P4
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-        }
+
+			// Init Linq2Db
+			var constr = System.Configuration.ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+			LinqToDB.Data.DataConnection.DefaultSettings = new MySettings() { ConnectionString = constr };
+		}
     }
 }

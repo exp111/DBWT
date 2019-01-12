@@ -139,7 +139,12 @@ namespace P4.Controllers
 		[ActionName("Detail")]
 		public ActionResult DetailPost(int id)
 		{
-			Response.SetCookie(BestellungController.AddToCookie(Request.Cookies["bestellung"], id, 1));
+			if (String.IsNullOrEmpty(Session["user"] as string))
+			{
+				return RedirectToAction("Index", "Login");
+			}
+			String cookieName = $"bestellung{Session["user"]}";
+			Response.SetCookie(BestellungController.AddToCookie(cookieName, Request.Cookies[cookieName], id, 1));
 			ModelState.AddModelError("Affirmation", "In den Warenkorb gelegt.");
 			return Detail(id);
 		}
