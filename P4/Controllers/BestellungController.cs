@@ -33,37 +33,9 @@ namespace P4.Controllers
 					var oldDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie.Value);
 					if (oldDict != null)
 					{
-						try
-						{
-							using (DbwtDB db = new DbwtDB())
-							{
-								int userId = 0;
-								if (!String.IsNullOrEmpty(Session["user"] as string))
-								{
-									var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()
-										?.Nummer;
-									userId = result != null ? Convert.ToInt32(result) : 0;
-								}
-
-								list = db.Mahlzeiten.Where(m => oldDict.ContainsKey(m.ID))
-									.Select(m => new WarenkorbItem
-									{
-										ID = m.ID,
-										Name = m.Name,
-										Count = oldDict[m.ID]
-									})
-									.ToList();
-
-								list.ForEach(m =>
-									m.Preis = db.QueryProc<double>("PreisFürNutzer",
-											new { Nutzer = userId, Mahlzeit = m.ID })
-										.FirstOrDefault());
-							}
-						}
-						catch (Exception e)
-						{
-							ModelState.AddModelError("Error", e.Message);
-						}
+						list = WarenkorbItem.GetWarenkorb(oldDict, Session["user"] as string, out string message);
+						if (!message.IsNullOrEmpty())
+							ModelState.AddModelError("Error", message);
 					}
 				}
 			}
@@ -116,30 +88,10 @@ namespace P4.Controllers
 				}
 				else if (Request.Form.AllKeys.Contains("order"))
 				{
-					using (DbwtDB db = new DbwtDB())
-					{
-						var result = db.Benutzer.Where(b => b.Nutzername.Equals(Session["user"])).FirstOrDefault()
-							?.Nummer;
-						int userId = result != null ? Convert.ToInt32(result) : 0; //TODO: we shouldn't let any faulty user order
-
-						int key = db.InsertWithInt32Identity(new DbModels.Bestellungen
-						{
-							Bestellzeitpunkt = DateTime.Now,
-							Abholzeitpunkt = DateTime.Parse(Request.Form["time"]),
-							Endpreis = Double.Parse(Request.Form["totalCost"]),
-							GetätigtVon = userId
-						});
-
-						List<Bestellungenenthältmahlzeiten> list = Request.Form.AllKeys
-							.Where(k => Int32.TryParse(k, out int n)).Select(k => new Bestellungenenthältmahlzeiten
-							{
-								Bestellung = key,
-								Mahlzeit = Int32.Parse(k),
-								Anzahl = Int32.Parse(Request.Form[k])
-							}).ToList();
-						db.BulkCopy(list);
-					}
+					DbModels.Bestellungen.Order(Request.Form, Session["user"] as string, out string message);
 					Response.Cookies[cookieName].Value = "";
+					if (!message.IsNullOrEmpty())
+						ModelState.AddModelError("Error", message);
 					ModelState.AddModelError("Affirmation", "Erfolgreich bestellt!");
 				}
 			}
@@ -211,25 +163,6 @@ namespace P4.Controllers
 				}
 			}
 			return PartialView(new { count = count });
-		}
-	}
-}
-
-namespace LinqToDB.Data
-{
-	static class DataConnectionExtension
-	{
-		public static List<T> QueryProc<T>(this DataConnection db, string proc, object values)
-		{
-			List<DataParameter> parameters = new List<DataParameter>();
-			foreach (var prop in values.GetType().GetProperties())
-			{
-				var name = prop.Name;
-				var value = prop.GetValue(values);
-				parameters.Add(new DataParameter(name, value));
-			}
-			var result = db.QueryProc<T>(proc, parameters.ToArray());
-			return result.ToList();
 		}
 	}
 }

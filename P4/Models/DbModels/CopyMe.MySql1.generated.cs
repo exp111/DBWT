@@ -6,6 +6,7 @@
 //---------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
 
@@ -126,6 +127,60 @@ namespace DbModels
 		[Column,        Nullable] public double?  Endpreis         { get; set; } // double
 		[Column,     NotNull, JsonIgnore] public int      GetätigtVon      { get; set; } // int(11)
 
+		public static List<Bestellungen> GetDispatch(int hours, out string msg)
+		{
+			List<Bestellungen> list = null;
+			try
+			{
+				using (DbwtDB db = new DbwtDB())
+				{
+					list = db.Bestellungen.Where(b => DateTime.Now < b.Abholzeitpunkt //after now
+																		&& DateTime.Now.AddHours(1) > b.Abholzeitpunkt) //in max 1h
+																		.ToList();
+				}
+			} catch (Exception e)
+			{
+				msg = e.Message;
+				return list;
+			}
+			msg = "";
+			return list;
+		}
+
+		public static void Order(NameValueCollection form, string userName, out string msg)
+		{
+			msg = "";
+			try
+			{
+				using (DbwtDB db = new DbwtDB())
+				{
+					var result = db.Benutzer.Where(b => b.Nutzername.Equals(userName)).FirstOrDefault()
+						?.Nummer;
+					int userId = result != null ? Convert.ToInt32(result) : 0; //TODO: we shouldn't let any faulty user order
+
+					int key = db.InsertWithInt32Identity(new DbModels.Bestellungen
+					{
+						Bestellzeitpunkt = DateTime.Now,
+						Abholzeitpunkt = DateTime.Parse(form["time"]),
+						Endpreis = Double.Parse(form["totalCost"]),
+						GetätigtVon = userId
+					});
+
+					List<Bestellungenenthältmahlzeiten> list = form.AllKeys
+						.Where(k => Int32.TryParse(k, out int n)).Select(k => new Bestellungenenthältmahlzeiten
+						{
+							Bestellung = key,
+							Mahlzeit = Int32.Parse(k),
+							Anzahl = Int32.Parse(form[k])
+						}).ToList();
+					db.BulkCopy(list);
+				}
+			}
+			catch (Exception e)
+			{
+				msg = e.Message;
+			}
+		}
 		#region Associations
 
 		/// <summary>

@@ -19,20 +19,11 @@ namespace P4.Controllers
 			if (xAuthorize.IsNullOrEmpty() || !xAuthorize.First().Equals("ohShitHereComesDatBoi"))
 				return Json(new HttpUnauthorizedResult("Sie sind nicht authorisiert"), JsonRequestBehavior.AllowGet);
 
-			using (DbwtDB db = new DbwtDB())
-			{
-				try
-				{
-					List<Bestellungen> list = db.Bestellungen.Where(b => DateTime.Now < b.Abholzeitpunkt //after now
-																	&& DateTime.Now.AddHours(1) > b.Abholzeitpunkt) //in max 1h
-																	.ToList();
-					return Json(list, JsonRequestBehavior.AllowGet);
-				}
-				catch (Exception e)
-				{
-					return Json(e.Message, JsonRequestBehavior.AllowGet);
-				}
-			}
+			List<Bestellungen> list = DbModels.Bestellungen.GetDispatch(1, out string msg);
+			if (!msg.IsNullOrEmpty())
+				return Json(msg, JsonRequestBehavior.AllowGet);
+
+			return Json(list, JsonRequestBehavior.AllowGet);
 		}
 
 		public ActionResult Index()
