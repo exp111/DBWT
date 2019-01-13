@@ -263,6 +263,7 @@ namespace P4.Models
 		public string Name { get; set; }
 		public double Preis { get; set; }
 		public int Count { get; set; }
+		public int Vorrat { get; set; }
 
 		public static List<WarenkorbItem> GetWarenkorb(Dictionary<int, int> oldDict, string userName, out string msg)
 		{
@@ -285,7 +286,8 @@ namespace P4.Models
 						{
 							ID = m.ID,
 							Name = m.Name,
-							Count = oldDict[m.ID]
+							Count = oldDict[m.ID],
+							Vorrat = m.Vorrat
 						})
 						.ToList();
 

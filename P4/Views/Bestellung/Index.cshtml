@@ -31,7 +31,7 @@
 					<td>@item.ID</td>
 					<td>@item.Name</td>
 					<td>@item.Preis.ToString("C2")</td>
-					<td><input type="number" min="0" step="1" value="@item.Count" name="@item.ID"/></td>
+					<td><input type="number" min="0" max="@item.Vorrat" step="1" value="@item.Count" name="@item.ID"/></td>
 					<td>@cost.ToString("C2")</td>
 				</tr>
 			}
